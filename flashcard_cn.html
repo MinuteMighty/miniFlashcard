@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>识字卡｜人教版 一～二年级（上/下）</title>
+<style>
+  :root {
+    /* 日式配色方案 */
+    --bg-primary: #faf8f5;     /* 米白色背景 */
+    --bg-secondary: #f5f2ed;   /* 浅米色 */
+    --card: #ffffff;           /* 纯白卡片 */
+    --text-primary: #2c2c2c;   /* 深灰色文字 */
+    --text-secondary: #6b6b6b; /* 中灰色 */
+    --text-muted: #9a9a9a;     /* 浅灰色 */
+    --accent: #8b7355;         /* 日式棕色 */
+    --accent-light: #a68b5b;   /* 浅棕色 */
+    --border: #e8e3dd;         /* 浅棕色边框 */
+    --shadow: 0 8px 32px rgba(139, 115, 85, 0.08);
+    --radius: 12px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    color: var(--text-primary);
+    font: 16px/1.6 "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", "Noto Sans CJK JP", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    min-height: 100vh;
+    letter-spacing: 0.02em;
+  }
+  
+  /* 移动端优化的头部 */
+  header{
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(139, 115, 85, 0.05);
+  }
+  h1{
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: 0.05em;
+  }
+  .settings-btn{
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 24px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(139, 115, 85, 0.2);
+  }
+  .settings-btn:hover{
+    background: var(--accent-light);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(139, 115, 85, 0.3);
+  }
+  
+  /* 主容器 */
+  .main-container{padding:20px 16px;max-width:480px;margin:0 auto;min-height:calc(100vh - 60px);display:flex;flex-direction:column;justify-content:center}
+  
+  /* 单卡片显示 */
+  .card-container{display:flex;justify-content:center;margin:24px 0}
+  .card{
+    perspective: 1000px;
+    width: 300px;
+    height: 300px;
+    position: relative;
+  }
+  .card-inner{
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: var(--shadow);
+    background: var(--card);
+    border: 1px solid var(--border);
+  }
+  .card.flipped .card-inner{transform: rotateY(180deg)}
+  .face{
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 24px;
+  }
+  .front{
+    background: linear-gradient(135deg, #ffffff 0%, #fefefe 100%);
+    border: 1px solid var(--border);
+  }
+  .back{
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    color: #fff;
+    transform: rotateY(180deg);
+  }
+  .hanzi{
+    font-size: 88px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    margin-bottom: 12px;
+    color: var(--text-primary);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  .pinyin{
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  .tag{
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: rgba(139, 115, 85, 0.1);
+    color: var(--accent);
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    border: 1px solid rgba(139, 115, 85, 0.2);
+  }
+  .hint{
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 8px;
+    letter-spacing: 0.02em;
+  }
+  
+  /* 控制按钮 */
+  .controls{
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin: 24px 0;
+  }
+  button{
+    appearance: none;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 28px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.02em;
+    box-shadow: 0 4px 16px rgba(139, 115, 85, 0.2);
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+  button:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 115, 85, 0.3);
+    background: var(--accent-light);
+  }
+  button.secondary{
+    background: #fff;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(139, 115, 85, 0.1);
+  }
+  button.secondary:hover{
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(139, 115, 85, 0.2);
+  }
+  button.ghost{
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    box-shadow: none;
+  }
+  button.ghost:hover{
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--accent);
+  }
+  
+  /* 进度信息 */
+  .progress{
+    text-align: center;
+    margin: 20px 0;
+    color: var(--text-secondary);
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+  }
+  
+  /* 设置弹窗 */
+  .modal{
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+  }
+  .modal.show{display: flex}
+  .dialog{
+    width: min(420px, 90vw);
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 24px 64px rgba(139, 115, 85, 0.15);
+    padding: 28px;
+    max-height: 85vh;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+  }
+  .dialog h3{
+    margin: 0 0 20px;
+    font-size: 20px;
+    text-align: center;
+    color: var(--text-primary);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  
+  /* 设置内容 */
+  .setting-group{margin-bottom: 24px}
+  .setting-group label{
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 15px;
+    letter-spacing: 0.01em;
+  }
+  select, input[type="number"]{
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 14px;
+    background: #fff;
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+  select:focus, input[type="number"]:focus{
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
+  }
+  
+  /* 课文选择 */
+  .lessons{
+    max-height: 220px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    background: var(--bg-primary);
+  }
+  .lessons h4{
+    margin: 12px 0 8px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+  .lesson-item{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    color: var(--text-primary);
+  }
+  .lesson-item:hover{
+    background: var(--bg-secondary);
+  }
+  .lesson-item input{
+    transform: scale(1.1);
+    accent-color: var(--accent);
+  }
+  
+  /* 按钮组 */
+  .btn-group{
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .btn-group button{flex: 1}
+  
+  /* 响应式调整 */
+  @media (max-width: 480px) {
+    .card{
+      width: 260px;
+      height: 260px;
+    }
+    .hanzi{
+      font-size: 76px;
+    }
+    .pinyin{
+      font-size: 30px;
+    }
+    .main-container{
+      padding: 16px 12px;
+    }
+    .dialog{
+      padding: 20px;
+      margin: 10px;
+    }
+    .controls{
+      gap: 12px;
+    }
+    button{
+      padding: 12px 20px;
+      font-size: 13px;
+    }
+  }
+  
+  @media (max-width: 360px) {
+    .card{
+      width: 240px;
+      height: 240px;
+    }
+    .hanzi{
+      font-size: 68px;
+    }
+    .pinyin{
+      font-size: 26px;
+    }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>识字卡</h1>
+    <button id="btnSettings" class="settings-btn">⚙️ 设置</button>
+  </header>
+
+  <div class="main-container">
+    <!-- 进度信息 -->
+    <div class="progress" id="progressInfo">点击"开始学习"开始识字</div>
+    
+    <!-- 单卡片显示 -->
+    <div class="card-container">
+      <div id="currentCard" class="card">
+        <div class="card-inner">
+          <div class="face front">
+            <div class="tag">生字</div>
+            <div class="hanzi" id="currentHanzi">字</div>
+            <div class="hint">点击翻面看拼音</div>
+          </div>
+          <div class="face back">
+            <div class="tag">拼音</div>
+            <div class="pinyin" id="currentPinyin">zì</div>
+            <div class="hint">点击翻面看生字</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 控制按钮 -->
+    <div class="controls">
+      <button id="btnStart" class="secondary">开始学习</button>
+      <button id="btnPrev" class="ghost" style="display:none;">上一个</button>
+      <button id="btnNext" class="ghost" style="display:none;">下一个</button>
+      <button id="btnShuffle" class="ghost" style="display:none;">🔀 随机</button>
+    </div>
+  </div>
+
+  <!-- 设置弹窗 -->
+  <div class="modal" id="settingsModal">
+    <div class="dialog">
+      <h3>学习设置</h3>
+      
+      <div class="setting-group">
+        <label>选择册别：</label>
+        <select id="bookSelect">
+          <option value="1上">一年级上</option>
+          <option value="1下">一年级下</option>
+          <option value="2上">二年级上</option>
+          <option value="2下" selected>二年级下</option>
+          <option value="3上">三年级上</option>
+          <option value="3下">三年级下</option>
+        </select>
+      </div>
+      
+      <div class="setting-group">
+        <label>选择课文：</label>
+        <div id="lessonList" class="lessons"></div>
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <button id="btnSelectAll" class="ghost" style="flex:1;">全选</button>
+          <button id="btnClear" class="ghost" style="flex:1;">清空</button>
+        </div>
+      </div>
+      
+      <div class="setting-group">
+        <label>学习模式：</label>
+        <select id="studyMode">
+          <option value="random">随机顺序</option>
+          <option value="sequential">按课文顺序</option>
+        </select>
+      </div>
+      
+      <div class="btn-group">
+        <button id="btnCloseSettings" class="secondary">关闭</button>
+        <button id="btnStartStudy">开始学习</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 数据编辑器（导入/导出 JSON） -->
+  <div class="modal" id="editModal">
+    <div class="dialog">
+      <h3>编辑当前册别的数据（JSON）</h3>
+      <div class="editor">
+        <textarea id="jsonArea" spellcheck="false" style="min-height:200px;width:100%;padding:10px;border:1px solid #e0e0e0;border-radius:8px;font-family:monospace;font-size:12px;"></textarea>
+        <div style="font-size:12px;color:#666;margin:8px 0;">
+          说明：一个条目形如
+          <code>{"unit":1,"id":"1-1","title":"课文标题","chars":"字 字 字"}</code>。
+          <br>粘贴你手头更准确的官方生字表后，点"保存"。仅影响当前选择的册别。
+        </div>
+        <div class="btn-group">
+          <button id="btnDownload" class="secondary">导出JSON</button>
+          <button id="btnCancelEdit" class="ghost">取消</button>
+          <button id="btnSave">保存</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- pinyin-pro（拼音库，CDN） -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pinyin-pro/3.27.0/index.js"></script>
+  <script>
+    // ========== 数据区 ==========
+    // 结构：DATA[册别] = LESSONS[]
+    // 其中 LESSONS[]: {unit:数字,id:"单元-序号",title:"课文标题",chars:"空格分隔的单字列表"}
+    const DATA = {
+      "1上": [
+        // ★ 一年级上：示范数据（可在“编辑”里替换为你校指定清单）
+        {unit:1,id:"1-1",title:"识字：天地人",chars:"天 地 人 你 我 他"},
+        {unit:1,id:"1-2",title:"识字：金木水火土",chars:"金 木 水 火 土"},
+        {unit:1,id:"1-3",title:"识字：口耳目",chars:"口 耳 目 手 足"},
+        {unit:1,id:"1-4",title:"课文：秋天",chars:"秋 风 雨 叶 果"},
+        {unit:2,id:"2-5",title:"课文：画",chars:"画 星 月 山 水"},
+        {unit:2,id:"2-6",title:"识字：日月水火",chars:"日 月 水 火"},
+        {unit:3,id:"3-7",title:"课文：大小多少",chars:"大 小 多 少 长 短"},
+        {unit:3,id:"3-8",title:"课文：四季",chars:"春 夏 秋 冬 冷 热"},
+        {unit:4,id:"4-9",title:"课文：文具",chars:"书 本 笔 尺 包"},
+        {unit:4,id:"4-10",title:"课文：动物朋友",chars:"鸟 鱼 虫 马 牛"},
+      ],
+      "1下": [
+        // ★ 一年级下：示范数据（可在“编辑”里替换）
+        {unit:1,id:"1-1",title:"识字：春夏秋冬",chars:"春 夏 秋 冬 花 草 树"},
+        {unit:1,id:"1-2",title:"课文：小公鸡和小鸭子",chars:"鸡 鸭 河 捉 找"},
+        {unit:1,id:"1-3",title:"课文：司马光",chars:"司 马 光 砸 缸"},
+        {unit:2,id:"2-4",title:"识字：方位词",chars:"上 下 左 右 前 后 里 外"},
+        {unit:2,id:"2-5",title:"课文：动物儿歌",chars:"猫 狗 熊 兔 狐"},
+        {unit:3,id:"3-6",title:"课文：彩虹",chars:"虹 雨 云 亮 彩"},
+        {unit:3,id:"3-7",title:"课文：交通工具",chars:"车 船 飞 机"},
+        {unit:4,id:"4-8",title:"课文：节日",chars:"年 节 灯 花 龙"},
+        {unit:4,id:"4-9",title:"课文：礼貌用语",chars:"请 谢 对 不 客 气"},
+      ],
+      "2上": [
+        // ★ 二年级上：示范数据（可在“编辑”里替换）
+        {unit:1,id:"1-1",title:"识字：场景词",chars:"晨 读 校 园 草 地 花 香"},
+        {unit:1,id:"1-2",title:"课文：黄山奇石（节选）",chars:"黄 山 奇 石 峰"},
+        {unit:1,id:"1-3",title:"课文：小柳树和小枣树",chars:"柳 枣 树 枝 叶"},
+        {unit:2,id:"2-4",title:"识字：颜色词",chars:"红 黄 蓝 绿 白 黑"},
+        {unit:2,id:"2-5",title:"课文：一分钟",chars:"分 钟 钟 表 快 慢"},
+        {unit:3,id:"3-6",title:"课文：课间十分钟",chars:"间 操 场 跳 跑"},
+        {unit:3,id:"3-7",title:"课文：风",chars:"风 吹 云 动"},
+        {unit:4,id:"4-8",title:"课文：语文园地词语",chars:"春 风 夏 雨 秋 果 冬 雪"},
+      ],
+      "2下": [
+        // ★ 二年级下：你前面确认的全册数据（精简示例：可用；如需官方全量可在“编辑”粘贴）
+        {unit:1,id:'1-1', title:'古诗两首（村居/咏柳）', chars:'诗 村 童 碧 妆 绿 丝 剪' },
+        {unit:1,id:'1-2', title:'找春天', chars:'冲 寻 姑 娘 吐 柳 荡 桃 杏' },
+        {unit:1,id:'1-3', title:'开满鲜花的小路', chars:'鲜 邮 递 员 原 叔 车 局 礼' },
+        {unit:1,id:'1-4', title:'邓小平爷爷植树', chars:'邓 植 引 注 满 休 息' },
+
+        {unit:2,id:'2-5', title:'雷锋叔叔，你在哪里', chars:'锋 昨 冒 留 弯 背 洒 温 暖' },
+        {unit:2,id:'2-6', title:'千人糕', chars:'能 桌 味 买 具 甘 甜 菜 劳' },
+        {unit:2,id:'2-7', title:'一匹出色的马', chars:'匹 妹 波 纹 像 景 恋 舍 求' },
+
+        {unit:3,id:'3-8', title:'识字：神州谣', chars:'州 湾 岛 峡 民 族 谊' },
+        {unit:3,id:'3-9', title:'传统节日', chars:'端 粽 舟 鼓 族 民 庆 灯 贴 联 拜' },
+        {unit:3,id:'3-10', title:'中外节日', chars:'圣 旦 节 巧 蜡 烛 复 活 感 恩 狂 欢' },
+
+        {unit:4,id:'4-11', title:'彩虹', chars:'虹 雨 伞 挡 透 闪 灿 烂' },
+        {unit:4,id:'4-12', title:'我是一只小虫子', chars:'虫 垂 斑 觅 捕 伪 装' },
+        {unit:4,id:'4-13', title:'植物妈妈有办法', chars:'旅 胞 苗 裂 飘 翅 伸 挺' },
+
+        {unit:5,id:'5-14', title:'古诗两首（绝句/江南春）', chars:'绝 江 南 春 繁' },
+        {unit:5,id:'5-15', title:'日月潭', chars:'潭 台 湾 村 民 游 鸟 绿 岛' },
+        {unit:5,id:'5-16', title:'葡萄沟', chars:'葡 萄 结 挂 露 摇 珍 珠' },
+        {unit:5,id:'5-17', title:'火烧云', chars:'烧 云 霞 晚 炎 亮 红' },
+
+        {unit:6,id:'6-18', title:'呼风唤雨的世纪', chars:'呼 唤 世 纪 遥 控 卫 星 火 箭' },
+        {unit:6,id:'6-19', title:'张衡造地动仪', chars:'衡 测 铜 雕 狮 吞 吐 环 碰' },
+        {unit:6,id:'6-20', title:'“神笔马良”（节选）', chars:'笔 马 良 画 渔 贴 墙 变 真 假' },
+
+        {unit:7,id:'7-21', title:'曹冲称象', chars:'曹 冲 象 沉 称 秤 重 官 担' },
+        {unit:7,id:'7-22', title:'黄山奇石', chars:'黄 山 奇 峰 壮 怪 石' },
+        {unit:7,id:'7-23', title:'猴王出世（节选）', chars:'猴 王 世 洞 庙 石 蛋 裂' },
+
+        {unit:8,id:'8-24', title:'两个铁球同时落地', chars:'铁 球 同 时 落 实 验 重 物' },
+        {unit:8,id:'8-25', title:'太空生活趣事', chars:'太 空 航 天 员 餐 桌 带 笑' },
+        {unit:8,id:'8-26', title:'司马光', chars:'司 马 光 砸 缸 急 智' },
+        {unit:8,id:'8-27', title:'爱迪生', chars:'爱 迪 生 发 明 电 灯 实 验' },
+      ],
+      "3上": [
+        // ★ 三年级上（按人教版常见目录整理；可在"编辑"里微调）
+        { unit: 1, id: "1-1", title: "大青树下的小学", chars: "晨 绒 球 汉 艳 服 装 扮 静 停 孔 雀 粗" },
+        { unit: 1, id: "1-2", title: "花的学校", chars: "落 荒 笛 舞 狂 罚 假 互 所 够 猜 扬 臂" },
+        { unit: 2, id: "2-3", title: "古诗三首", chars: "寒 径 斜 霜 赠 刘 盖 菊 残 君 橙 送 挑" },
+        { unit: 2, id: "2-4", title: "铺满金色巴掌的水泥道", chars: "铺 泥 晶 院 墙 印 排 列 规 则 乱 棕 迟" },
+        { unit: 2, id: "2-5", title: "秋天的雨", chars: "盒 颜 料 票 飘 争 仙 淡 闻 梨 勾 曲 丰" },
+        { unit: 3, id: "3-6", title: "去年的树", chars: "冷 离 等 斧 砍 谷 柴 煤 油 诉 睁 接" },
+        { unit: 3, id: "3-7", title: "在牛肚子里旅行", chars: "旅 咱 怜 救 命 拼 扫 胃 管 刚 流 泪 算" },
+        { unit: 4, id: "4-8", title: "总也倒不了的老屋", chars: "洞 准 备 暴 墙 壁 饿 蜘 蛛 漂 撞 饱 晒" },
+        { unit: 5, id: "5-9", title: "搭船的鸟", chars: "搭 亲 父 沙 啦 响 羽 翠 嘴 悄 吞 哦 捕" },
+        { unit: 5, id: "5-10", title: "金色的草地", chars: "蒲 英 盛 耍 喊 欠 钓 而 察 拢 趣 喜 睡" },
+        { unit: 6, id: "6-11", title: "古诗三首", chars: "断 楚 至 孤 帆 饮 初 镜 未 磨 遥 银 盘" },
+        { unit: 6, id: "6-12", title: "富饶的西沙群岛", chars: "富 优 浅 错 岩 虾 挺 鼓 数 厚 宝 贵" },
+        { unit: 6, id: "6-13", title: "海滨小城", chars: "滨 灰 渔 遍 躺 载 靠 栽 亚 夏 除 踩 洁" },
+        { unit: 6, id: "6-14", title: "美丽的小兴安岭", chars: "脑 袋 严 实 挡 视 线 坛 显 材 软 刮 库" },
+        { unit: 7, id: "7-15", title: "大自然的声音", chars: "妙 演 奏 琴 柔 感 受 激 击 器 滴 敲 鸣" },
+        { unit: 7, id: "7-16", title: "父亲、树林和鸟", chars: "朝 雾 蒙 鼻 总 抖 露 湿 吸 猎 翅 膀 重" },
+        { unit: 7, id: "7-17", title: "带刺的朋友", chars: "刺 枣 颗 忽 乎 暗 伸 匆 沟 聪 偷 追 腰" },
+        { unit: 8, id: "8-18", title: "司马光", chars: "司 庭 登 跌 众 弃 持" },
+        { unit: 8, id: "8-19", title: "掌声", chars: "掌 班 默 腿 轮 投 调 摇 晃 烈 勇" },
+        { unit: 8, id: "8-20", title: "灰雀", chars: "雀 郊 养 粉 粒 男 或 者 冻 惜 肯 诚" }
+      ],
+
+      "3下": [
+        // ★ 三年级下（按人教版常见目录整理；可在“编辑”里微调）
+        // 第一单元
+        {unit:1,id:"1-1",title:"古诗三首",chars:"鸳 鸯 惠 崇 豚 减"},
+        {unit:1,id:"1-2",title:"燕子",chars:"伶 俐 翼 漾 倦 闲 散 纤 杆 痕"},
+        {unit:1,id:"1-3",title:"荷花",chars:"挨 蓬 胀 翩 蹈"},
+        {unit:1,id:"1-4",title:"昆虫备忘录",chars:"录 凡 距 款 绸 膜 瞎 益 约 蚂 斑"},
+
+        // 第二单元
+        {unit:2,id:"2-5",title:"守株待兔",chars:"宋 耕 释 冀"},
+        {unit:2,id:"2-6",title:"陶罐和铁罐",chars:"陶 罐 骄 谦 虚 懦 弱 恼 代 价"},
+        {unit:2,id:"2-7",title:"鹿角和鹿腿",chars:"称 禁 皱 配 怨 狮 逼 撒 挣"},
+        {unit:2,id:"2-8",title:"池子与河流",chars:"滔 涯 妇 碌 遵 循 尊 验"},
+
+        // 第三单元
+        {unit:3,id:"3-9",title:"古诗三首",chars:"屠 苏 魂 酒 牧 兄 倍"},
+        {unit:3,id:"3-10",title:"纸的发明",chars:"创 携 存 制 麻 蔡 伦 累 切 鲜 欧 洲 社"},
+        {unit:3,id:"3-11",title:"赵州桥",chars:"县 拱 济 匠 计 史 爪 智 慧 历"},
+        {unit:3,id:"3-12",title:"一幅名扬中外的画",chars:"择 都 宫 摊 贩 吏 作 态 驴 寸 乘 笼 栏 貌"},
+
+        // 第四单元
+        {unit:4,id:"4-13",title:"花钟",chars:"芬 芳 内 作 燥 灼 适 雅 吻 组"},
+        {unit:4,id:"4-14",title:"蜜蜂",chars:"概 阻 括 误 逆 途 陌 超"},
+        {unit:4,id:"4-15",title:"小虾",chars:"缸 隙 掀 末 副 钳 搏 较 腹"},
+
+        // 第五单元
+        {unit:5,id:"5-16",title:"宇宙的另一边",chars:"淌 秘 栋 吁 绪 篇"},
+        {unit:5,id:"5-17",title:"我变成了一棵树",chars:"希 痒 鳄 丁 零 肠 醋"},
+
+        // 第六单元
+        {unit:6,id:"6-18",title:"童年的水墨画",chars:"墨 染 碎 浪 溅 爽"},
+        {unit:6,id:"6-19",title:"剃头大师",chars:"剃 执 否 骂 仇 惯 刑 替 厘 摸"},
+        {unit:6,id:"6-20",title:"肥皂泡",chars:"廊 和 悠 若 娇 薄 颤 巍 巅 婴"},
+        {unit:6,id:"6-21",title:"我不能失信",chars:"耀 庆 盼 叠 歉"},
+
+        // 第七单元
+        {unit:7,id:"7-22",title:"我们奇妙的世界",chars:"呈 雕 幻 辉 芒 剑 型"},
+        {unit:7,id:"7-23",title:"海底世界",chars:"窃 私 警 肌 章 胞 达 煤 储 属"},
+        {unit:7,id:"7-24",title:"火烧云",chars:"檀 喂 盈 彤 跪 庙 模 揉"},
+
+        // 第八单元
+        {unit:8,id:"8-25",title:"慢性子裁缝和急性子顾客",chars:"缝 箱 夸 歪 承 袖 衬 衫 负 泄 艺"},
+        {unit:8,id:"8-26",title:"方帽子店",chars:"橱 改 蕉 扣 嚷 溜 筒 董"},
+        {unit:8,id:"8-27",title:"漏",chars:"婆 脊 贼 莫 颠 胶 旋 纵"},
+        {unit:8,id:"8-28",title:"枣核",chars:"核 妻 爹 犁 折 困 牲 府 罢 涨"},
+        ],
+    };
+
+    // ========== 应用逻辑 ==========
+    const bookSelect = document.getElementById('bookSelect');
+    const listEl = document.getElementById('lessonList');
+    const progressInfoEl = document.getElementById('progressInfo');
+    const currentCardEl = document.getElementById('currentCard');
+    const currentHanziEl = document.getElementById('currentHanzi');
+    const currentPinyinEl = document.getElementById('currentPinyin');
+    
+    // 学习状态
+    let currentDeck = [];
+    let currentIndex = 0;
+    let isStudyMode = false;
+
+    function groupBy(arr, key){return arr.reduce((m,it)=>((m[it[key]]??=[]).push(it),m),{})}
+    function unique(arr){return [...new Set(arr)]}
+    function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+    function getPinyinForChar(ch){
+      try{
+        // 检查 pinyinPro 是否可用
+        if (typeof pinyinPro === 'undefined') {
+          console.warn('pinyinPro 库未加载');
+          return '';
+        }
+        
+        // 使用 pinyin-pro 库获取拼音
+        const py = pinyinPro.pinyin(ch, { 
+          toneType: 'mark',  // 使用声调标记
+          type: 'string',    // 返回字符串而不是数组
+          multiple: false    // 只返回第一个读音
+        });
+        
+        console.log(`字符 "${ch}" 的拼音:`, py);
+        return py || '';
+      }catch(e){ 
+        console.warn('获取拼音失败:', ch, e);
+        return ''; 
+      }
+    }
+
+    function renderLessonList(){
+      const book = bookSelect.value;
+      const LESSONS = DATA[book] || [];
+      const grouped = groupBy(LESSONS,'unit');
+      let html = '';
+      Object.keys(grouped).sort((a,b)=>+a-+b).forEach(u=>{
+        html += `<h4>第${u}单元</h4>`;
+        grouped[u].forEach(l=>{
+          html += `
+            <label class="lesson-item">
+              <input type="checkbox" data-id="${l.id}" checked>
+              <span>${l.title}</span>
+            </label>`;
+        });
+      });
+      listEl.innerHTML = html || '<div style="color:#999;padding:6px 4px;">本册暂无数据</div>';
+    }
+
+    function collectChars(){
+      const book = bookSelect.value;
+      const LESSONS = DATA[book] || [];
+      const checks = [...listEl.querySelectorAll('input[type="checkbox"]')].filter(c=>c.checked);
+      const chosenIds = new Set(checks.map(c=>c.dataset.id));
+      const pool = [];
+      LESSONS.forEach(l=>{
+        if(chosenIds.size===0 || chosenIds.has(l.id)){
+          const chars = (l.chars||'').split(/\s+/).filter(Boolean);
+          pool.push(...chars);
+        }
+      });
+      return unique(pool);
+    }
+
+    function buildDeck(){
+      const pool = collectChars();
+      if(pool.length===0){
+        progressInfoEl.textContent = '没有可用生字，请先在设置中选择课文';
+        return false;
+      }
+      
+      const studyMode = document.getElementById('studyMode').value;
+      if(studyMode === 'random') {
+        currentDeck = shuffle(pool).map(ch=>({ch, py:getPinyinForChar(ch)}));
+      } else {
+        currentDeck = pool.map(ch=>({ch, py:getPinyinForChar(ch)}));
+      }
+      
+      currentIndex = 0;
+      isStudyMode = true;
+      return true;
+    }
+
+    function showCurrentCard(){
+      if(!isStudyMode || currentDeck.length === 0) return;
+      
+      const current = currentDeck[currentIndex];
+      currentHanziEl.textContent = current.ch;
+      currentPinyinEl.textContent = current.py || '暂无拼音';
+      
+      // 重置卡片状态
+      currentCardEl.classList.remove('flipped');
+      
+      // 更新进度信息
+      progressInfoEl.textContent = `${currentIndex + 1} / ${currentDeck.length}`;
+      
+      // 显示/隐藏控制按钮
+      document.getElementById('btnNext').style.display = currentIndex < currentDeck.length - 1 ? 'block' : 'none';
+      document.getElementById('btnPrev').style.display = currentIndex > 0 ? 'block' : 'none';
+    }
+
+    function nextCard(){
+      if(currentIndex < currentDeck.length - 1) {
+        currentIndex++;
+        showCurrentCard();
+      }
+    }
+
+    function prevCard(){
+      if(currentIndex > 0) {
+        currentIndex--;
+        showCurrentCard();
+      }
+    }
+
+    function startStudy(){
+      if(buildDeck()) {
+        showCurrentCard();
+        document.getElementById('btnStart').style.display = 'none';
+        document.getElementById('btnNext').style.display = 'block';
+        document.getElementById('btnPrev').style.display = 'block';
+        document.getElementById('btnShuffle').style.display = 'block';
+        progressInfoEl.textContent = `1 / ${currentDeck.length}`;
+      }
+    }
+
+    function shuffleCurrentDeck(){
+      if(!isStudyMode || currentDeck.length === 0) return;
+      
+      // 打乱顺序
+      currentDeck = shuffle(currentDeck);
+      
+      // 自动回到第一个生字
+      currentIndex = 0;
+      
+      // 显示当前卡片
+      showCurrentCard();
+      
+      // 显示提示
+      progressInfoEl.textContent = `1 / ${currentDeck.length} (已随机)`;
+      setTimeout(() => {
+        progressInfoEl.textContent = `1 / ${currentDeck.length}`;
+      }, 2000);
+    }
+
+    // 事件绑定
+    document.getElementById('btnSelectAll').onclick = ()=>{listEl.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=true)};
+    document.getElementById('btnClear').onclick = ()=>{listEl.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=false)};
+    document.getElementById('btnStart').onclick = startStudy;
+    document.getElementById('btnNext').onclick = nextCard;
+    document.getElementById('btnPrev').onclick = prevCard;
+    document.getElementById('btnShuffle').onclick = shuffleCurrentDeck;
+    document.getElementById('btnStartStudy').onclick = ()=>{startStudy(); document.getElementById('settingsModal').classList.remove('show');};
+    document.getElementById('btnSettings').onclick = ()=>{document.getElementById('settingsModal').classList.add('show');};
+    document.getElementById('btnCloseSettings').onclick = ()=>{document.getElementById('settingsModal').classList.remove('show');};
+    currentCardEl.addEventListener('click', ()=>{currentCardEl.classList.toggle('flipped')});
+    bookSelect.addEventListener('change', ()=>{renderLessonList(); resetStudy()});
+    
+    function resetStudy(){
+      isStudyMode = false;
+      currentDeck = [];
+      currentIndex = 0;
+      document.getElementById('btnStart').style.display = 'block';
+      document.getElementById('btnNext').style.display = 'none';
+      document.getElementById('btnPrev').style.display = 'none';
+      document.getElementById('btnShuffle').style.display = 'none';
+      progressInfoEl.textContent = '点击"开始学习"开始识字';
+      currentHanziEl.textContent = '字';
+      currentPinyinEl.textContent = 'zì';
+      currentCardEl.classList.remove('flipped');
+    }
+
+    // ========== 数据编辑器 ==========
+    const editModal = document.getElementById('editModal');
+    const jsonArea = document.getElementById('jsonArea');
+    const btnCancelEdit = document.getElementById('btnCancelEdit');
+    const btnSave = document.getElementById('btnSave');
+    const btnDownload = document.getElementById('btnDownload');
+
+    // 添加编辑按钮到设置弹窗
+    function addEditButton(){
+      const settingsDialog = document.querySelector('#settingsModal .dialog');
+      const editBtn = document.createElement('button');
+      editBtn.textContent = '编辑数据';
+      editBtn.className = 'ghost';
+      editBtn.style.marginTop = '10px';
+      editBtn.onclick = ()=>{
+        const book = bookSelect.value;
+        const src = (DATA[book]||[]).map(x=>({unit:x.unit,id:x.id,title:x.title,chars:x.chars}));
+        jsonArea.value = JSON.stringify(src, null, 2);
+        editModal.classList.add('show');
+      };
+      settingsDialog.appendChild(editBtn);
+    }
+
+    btnCancelEdit.onclick = ()=> editModal.classList.remove('show');
+    btnSave.onclick = ()=>{
+      try{
+        const parsed = JSON.parse(jsonArea.value);
+        if(!Array.isArray(parsed)) throw new Error('JSON 顶层应为数组');
+        const ok = parsed.every(it=>typeof it.unit==='number' && typeof it.id==='string' && typeof it.title==='string' && typeof it.chars==='string');
+        if(!ok) throw new Error('每项需包含 {unit:number,id:string,title:string,chars:string}');
+        DATA[bookSelect.value] = parsed;
+        editModal.classList.remove('show');
+        renderLessonList();
+        resetStudy();
+        alert('数据已更新，请重新开始学习');
+      }catch(err){
+        alert('解析失败：'+err.message);
+      }
+    };
+    btnDownload.onclick = ()=>{
+      const blob = new Blob([jsonArea.value], {type:'application/json;charset=utf-8'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `生字数据-${bookSelect.value}.json`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    };
+
+    // 等待库加载完成后再初始化
+    function initializeApp() {
+      if (typeof pinyinPro === 'undefined') {
+        console.warn('pinyinPro 库未加载，请检查网络连接');
+        // 延迟重试
+        setTimeout(initializeApp, 1000);
+        return;
+      }
+      
+      console.log('pinyinPro 库已成功加载');
+      renderLessonList();
+      addEditButton();
+      resetStudy();
+    }
+
+    // 页面加载完成后初始化
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeApp);
+    } else {
+      initializeApp();
+    }
+  </script>
+</body>
+</html>
