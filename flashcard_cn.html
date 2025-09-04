@@ -309,6 +309,217 @@
   }
   .btn-group button{flex: 1}
   
+  /* 听写界面样式 */
+  .dictation-container {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0;
+  }
+  
+  .dictation-card {
+    width: 100%;
+    max-width: 400px;
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    padding: 28px;
+  }
+  
+  .dictation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .play-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .play-btn:hover {
+    background: var(--accent-light);
+    transform: scale(1.05);
+  }
+  
+  .play-btn:active {
+    transform: scale(0.95);
+  }
+  
+  .dictation-content {
+    text-align: center;
+  }
+  
+  .audio-visual {
+    margin-bottom: 28px;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+  
+  .sound-waves {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    height: 40px;
+    margin-bottom: 16px;
+  }
+  
+  .sound-waves span {
+    width: 4px;
+    height: 20px;
+    background: var(--accent);
+    border-radius: 2px;
+    opacity: 0.3;
+    transition: all 0.3s ease;
+  }
+  
+  .sound-waves.playing span {
+    animation: soundWave 1.2s ease-in-out infinite;
+  }
+  
+  .sound-waves.playing span:nth-child(1) { animation-delay: 0s; }
+  .sound-waves.playing span:nth-child(2) { animation-delay: 0.1s; }
+  .sound-waves.playing span:nth-child(3) { animation-delay: 0.2s; }
+  .sound-waves.playing span:nth-child(4) { animation-delay: 0.3s; }
+  .sound-waves.playing span:nth-child(5) { animation-delay: 0.4s; }
+  
+  @keyframes soundWave {
+    0%, 100% { height: 20px; opacity: 0.3; }
+    50% { height: 35px; opacity: 1; }
+  }
+  
+  .current-pinyin {
+    font-size: 24px;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+  }
+  
+  .input-area {
+    margin-bottom: 24px;
+  }
+  
+  .input-area input {
+    width: 100%;
+    max-width: 200px;
+    padding: 16px 20px;
+    font-size: 32px;
+    text-align: center;
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+  }
+  
+  .input-area input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.1);
+    transform: scale(1.02);
+  }
+  
+  .input-area input.correct {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.05);
+  }
+  
+  .input-area input.incorrect {
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.05);
+    animation: shake 0.5s ease-in-out;
+  }
+  
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+  
+  .input-hint {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+  }
+  
+  .result-area {
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .result-area.correct {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+  
+  .result-area.incorrect {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+  
+  .result-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+  
+  .result-text {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+  }
+  
+  .result-area.correct .result-text {
+    color: #059669;
+  }
+  
+  .result-area.incorrect .result-text {
+    color: #dc2626;
+  }
+  
+  .answer-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .correct-answer {
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text-primary);
+    padding: 8px 16px;
+    background: rgba(139, 115, 85, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(139, 115, 85, 0.2);
+  }
+  
+  .correct-pinyin {
+    font-size: 18px;
+    color: var(--accent);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+  }
+
   /* 响应式调整 */
   @media (max-width: 480px) {
     .card{
@@ -335,6 +546,34 @@
       padding: 12px 20px;
       font-size: 13px;
     }
+    
+    /* 听写界面移动端优化 */
+    .dictation-card {
+      padding: 20px;
+      margin: 0 8px;
+    }
+    
+    .audio-visual {
+      padding: 16px;
+    }
+    
+    .current-pinyin {
+      font-size: 20px;
+    }
+    
+    .input-area input {
+      font-size: 28px;
+      padding: 14px 16px;
+    }
+    
+    .correct-answer {
+      font-size: 24px;
+      padding: 6px 12px;
+    }
+    
+    .correct-pinyin {
+      font-size: 16px;
+    }
   }
   
   @media (max-width: 360px) {
@@ -347,6 +586,52 @@
     }
     .pinyin{
       font-size: 26px;
+    }
+    
+    /* 小屏幕听写界面优化 */
+    .dictation-card {
+      padding: 16px;
+    }
+    
+    .dictation-header {
+      margin-bottom: 20px;
+    }
+    
+    .play-btn {
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+    
+    .audio-visual {
+      padding: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .current-pinyin {
+      font-size: 18px;
+    }
+    
+    .input-area input {
+      font-size: 24px;
+      padding: 12px 14px;
+      max-width: 160px;
+    }
+    
+    .correct-answer {
+      font-size: 20px;
+      padding: 4px 8px;
+    }
+    
+    .correct-pinyin {
+      font-size: 14px;
+    }
+    
+    .result-icon {
+      font-size: 24px;
+    }
+    
+    .result-text {
+      font-size: 14px;
     }
   }
 </style>
@@ -379,12 +664,50 @@
       </div>
     </div>
     
+    <!-- 听写界面 -->
+    <div id="dictationContainer" class="dictation-container" style="display:none;">
+      <div class="dictation-card">
+        <div class="dictation-header">
+          <div class="tag">听写练习</div>
+          <button id="btnPlayAudio" class="play-btn">🔊 播放</button>
+        </div>
+        
+        <div class="dictation-content">
+          <div class="audio-visual">
+            <div class="sound-waves" id="soundWaves">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <div class="current-pinyin" id="dictationPinyin">点击播放听声音</div>
+          </div>
+          
+          <div class="input-area">
+            <input type="text" id="dictationInput" placeholder="请输入听到的汉字" autocomplete="off" maxlength="1">
+            <div class="input-hint">听清楚后，输入对应的汉字</div>
+          </div>
+          
+          <div class="result-area" id="resultArea" style="display:none;">
+            <div class="result-icon" id="resultIcon"></div>
+            <div class="result-text" id="resultText"></div>
+            <div class="answer-display">
+              <span class="correct-answer" id="correctAnswer"></span>
+              <span class="correct-pinyin" id="correctPinyin"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <!-- 控制按钮 -->
     <div class="controls">
       <button id="btnStart" class="secondary">开始学习</button>
       <button id="btnPrev" class="ghost" style="display:none;">上一个</button>
       <button id="btnNext" class="ghost" style="display:none;">下一个</button>
       <button id="btnShuffle" class="ghost" style="display:none;">🔀 随机</button>
+      
+      <!-- 听写专用按钮 -->
+      <button id="btnCheck" class="secondary" style="display:none;">检查答案</button>
+      <button id="btnNextDictation" class="ghost" style="display:none;">下一个</button>
+      <button id="btnReplay" class="ghost" style="display:none;">🔊 重播</button>
     </div>
   </div>
 
@@ -422,6 +745,28 @@
         </select>
       </div>
       
+      <div class="setting-group">
+        <label>练习方式：</label>
+        <select id="practiceMode">
+          <option value="flashcard">识字卡模式</option>
+          <option value="dictation">听写模式</option>
+        </select>
+      </div>
+      
+      <div class="setting-group">
+        <label>语音质量：</label>
+        <select id="voiceQuality">
+          <option value="high" selected>高质量（在线语音）</option>
+          <option value="medium">中等质量（系统语音）</option>
+          <option value="basic">基础质量（浏览器默认）</option>
+        </select>
+        <div style="font-size:12px;color:#999;margin-top:8px;">
+          💡 高质量：Google/Microsoft在线语音（海外友好）<br>
+          🌐 中等质量：系统优化语音（无需网络）<br>
+          📱 基础质量：浏览器默认语音（兼容性最佳）
+        </div>
+      </div>
+      
       <div class="btn-group">
         <button id="btnCloseSettings" class="secondary">关闭</button>
         <button id="btnStartStudy">开始学习</button>
@@ -456,78 +801,88 @@
     // 结构：DATA[册别] = LESSONS[]
     // 其中 LESSONS[]: {unit:数字,id:"单元-序号",title:"课文标题",chars:"空格分隔的单字列表"}
     const DATA = {
-      "1上": [
-        // ★ 一年级上：示范数据（可在“编辑”里替换为你校指定清单）
-        {unit:1,id:"1-1",title:"识字：天地人",chars:"天 地 人 你 我 他"},
-        {unit:1,id:"1-2",title:"识字：金木水火土",chars:"金 木 水 火 土"},
-        {unit:1,id:"1-3",title:"识字：口耳目",chars:"口 耳 目 手 足"},
-        {unit:1,id:"1-4",title:"课文：秋天",chars:"秋 风 雨 叶 果"},
-        {unit:2,id:"2-5",title:"课文：画",chars:"画 星 月 山 水"},
-        {unit:2,id:"2-6",title:"识字：日月水火",chars:"日 月 水 火"},
-        {unit:3,id:"3-7",title:"课文：大小多少",chars:"大 小 多 少 长 短"},
-        {unit:3,id:"3-8",title:"课文：四季",chars:"春 夏 秋 冬 冷 热"},
-        {unit:4,id:"4-9",title:"课文：文具",chars:"书 本 笔 尺 包"},
-        {unit:4,id:"4-10",title:"课文：动物朋友",chars:"鸟 鱼 虫 马 牛"},
-      ],
+              "1上": [
+          {unit:1,id:"1-1",title:"秋天",chars:"了 子 人 大"},
+          {unit:1,id:"1-2",title:"小小的船",chars:"月 儿 头 里"},
+          {unit:1,id:"1-3",title:"江南",chars:"可 东 西"},
+          {unit:1,id:"1-4",title:"四季",chars:"天 四 是"},
+          {unit:2,id:"2-5",title:"影子",chars:"在 后 我 好"},
+          {unit:2,id:"2-6",title:"比尾巴",chars:"长 比 巴 把"},
+          {unit:2,id:"2-7",title:"青蛙写诗",chars:"下 个 雨 们"},
+          {unit:2,id:"2-8",title:"雨点儿",chars:"问 有 半 从 你"},
+          {unit:3,id:"3-9",title:"明天要远足",chars:"才 明 同 学"},
+          {unit:3,id:"3-10",title:"大还是小",chars:"自 己 衣"},
+          {unit:3,id:"3-11",title:"项链",chars:"白 的 又 和"},
+          {unit:4,id:"4-12",title:"雪地里的小画家",chars:"竹 牙 马 用 几"},
+          {unit:4,id:"4-13",title:"乌鸦喝水",chars:"只 石 多 出 见"},
+          {unit:4,id:"4-14",title:"小蜗牛",chars:"对 妈 全 回"}
+        ],
       "1下": [
-        // ★ 一年级下：示范数据（可在“编辑”里替换）
-        {unit:1,id:"1-1",title:"识字：春夏秋冬",chars:"春 夏 秋 冬 花 草 树"},
-        {unit:1,id:"1-2",title:"课文：小公鸡和小鸭子",chars:"鸡 鸭 河 捉 找"},
-        {unit:1,id:"1-3",title:"课文：司马光",chars:"司 马 光 砸 缸"},
-        {unit:2,id:"2-4",title:"识字：方位词",chars:"上 下 左 右 前 后 里 外"},
-        {unit:2,id:"2-5",title:"课文：动物儿歌",chars:"猫 狗 熊 兔 狐"},
-        {unit:3,id:"3-6",title:"课文：彩虹",chars:"虹 雨 云 亮 彩"},
-        {unit:3,id:"3-7",title:"课文：交通工具",chars:"车 船 飞 机"},
-        {unit:4,id:"4-8",title:"课文：节日",chars:"年 节 灯 花 龙"},
-        {unit:4,id:"4-9",title:"课文：礼貌用语",chars:"请 谢 对 不 客 气"},
-      ],
-      "2上": [
-        // ★ 二年级上：示范数据（可在“编辑”里替换）
-        {unit:1,id:"1-1",title:"识字：场景词",chars:"晨 读 校 园 草 地 花 香"},
-        {unit:1,id:"1-2",title:"课文：黄山奇石（节选）",chars:"黄 山 奇 石 峰"},
-        {unit:1,id:"1-3",title:"课文：小柳树和小枣树",chars:"柳 枣 树 枝 叶"},
-        {unit:2,id:"2-4",title:"识字：颜色词",chars:"红 黄 蓝 绿 白 黑"},
-        {unit:2,id:"2-5",title:"课文：一分钟",chars:"分 钟 钟 表 快 慢"},
-        {unit:3,id:"3-6",title:"课文：课间十分钟",chars:"间 操 场 跳 跑"},
-        {unit:3,id:"3-7",title:"课文：风",chars:"风 吹 云 动"},
-        {unit:4,id:"4-8",title:"课文：语文园地词语",chars:"春 风 夏 雨 秋 果 冬 雪"},
-      ],
+          {unit:1,id:"1-1",title:"吃水不忘挖井人",chars:"吃 叫 主 江 住 没 以"},
+          {unit:1,id:"1-2",title:"我多想去看看",chars:"会 走 北 京 门 广"},
+          {unit:1,id:"1-3",title:"一个接一个",chars:"过 各 种 样 伙 伴 这"},
+          {unit:1,id:"1-4",title:"四个太阳",chars:"太 阳 校 金 秋 因 为"},
+          {unit:2,id:"2-5",title:"小公鸡和小鸭子",chars:"他 河 说 也 地 听 哥"},
+          {unit:2,id:"2-6",title:"树和喜鹊",chars:"乐 单 呼 居 招 快"},
+          {unit:2,id:"2-7",title:"怎么都快乐",chars:"讲 许 很 当 玩 行 音"},
+          {unit:3,id:"3-8",title:"静夜思",chars:"乡 前 光 低 床 故 思"},
+          {unit:3,id:"3-9",title:"夜色",chars:"再 外 爸 晚 看 色 笑"},
+          {unit:3,id:"3-10",title:"端午粽",chars:"午 节 叶 真 米 豆 分"},
+          {unit:3,id:"3-11",title:"彩虹",chars:"兴 到 那 千 成 着 高"},
+          {unit:4,id:"4-12",title:"古诗二首",chars:"无 尖 树 爱 采 角 首"},
+          {unit:4,id:"4-13",title:"荷叶圆圆",chars:"美 亮 台 朵 机 放 鱼"},
+          {unit:4,id:"4-14",title:"要下雨了",chars:"加 边 吗 吧 呀 呢 直"},
+          {unit:5,id:"5-15",title:"棉花姑娘",chars:"病 医 别 干 奇 七 星"},
+          {unit:5,id:"5-16",title:"咕咚",chars:"吓 怕 跟 家 羊 象 都"},
+          {unit:5,id:"5-17",title:"小壁虎借尾巴",chars:"捉 条 爬 姐 您 草 房"}
+        ],
+              "2上": [
+         {unit:1,id:"1-1",title:"小蝌蚪找妈妈",chars:"两 哪 宽 就 孩 晴 肚 皮 跳 顶"},
+         {unit:1,id:"1-2",title:"我是什么",chars:"作 傍 变 带 洋 海 给 坏 极 片"},
+         {unit:1,id:"1-3",title:"植物妈妈有办法",chars:"识 它 如 她 娃 法 毛 更 脚 知"},
+         {unit:2,id:"2-4",title:"曹冲称象",chars:"做 底 岁 然 杆 柱 称 秤 站 船"},
+         {unit:2,id:"2-5",title:"玲玲的画",chars:"候 评 及 奖 并 幅 另 报 拿 画"},
+         {unit:2,id:"2-6",title:"一封信",chars:"写 今 信 封 圆 灯 笔 珠 支 电"},
+         {unit:3,id:"3-7",title:"妈妈睡了",chars:"事 先 发 哄 闭 沉 脸 窗"},
+         {unit:3,id:"3-8",title:"古诗二首",chars:"依 川 尽 层 挂 照 炉 烟 楼 黄"},
+         {unit:4,id:"4-9",title:"黄山奇石",chars:"些 部 位 升 南 巨 闪 每"},
+         {unit:4,id:"4-10",title:"日月潭",chars:"丽 华 迹 央 名 展 披 现 胜"},
+         {unit:4,id:"4-11",title:"葡萄沟",chars:"利 市 客 坡 城 老 枝 收 起 份"},
+         {unit:5,id:"5-12",title:"坐井观天",chars:"井 际 话 喝 沿 渴 观 答"},
+         {unit:5,id:"5-13",title:"寒号鸟",chars:"阵 却 将 夜 枯 朗 面 纷"},
+         {unit:5,id:"5-14",title:"我要的是葫芦",chars:"邻 谢 治 怪 棵 想 盯 言"},
+         {unit:6,id:"6-15",title:"大禹治水",chars:"业 产 认 道 洪 灾 被 难"},
+         {unit:6,id:"6-16",title:"朱德的扁担",chars:"军 伍 师 士 担 扁 志 站"},
+         {unit:7,id:"7-17",title:"难忘的泼水节",chars:"度 泼 炮 忘 龙"},
+         {unit:7,id:"7-18",title:"古诗二首",chars:"阴 似 苍 茫 惊 危 敢 野"},
+         {unit:7,id:"7-19",title:"雾在哪里",chars:"久 切 于 论 岸 屋 散 步"}
+        ],
       "2下": [
-        // ★ 二年级下：你前面确认的全册数据（精简示例：可用；如需官方全量可在“编辑”粘贴）
-        {unit:1,id:'1-1', title:'古诗两首（村居/咏柳）', chars:'诗 村 童 碧 妆 绿 丝 剪' },
-        {unit:1,id:'1-2', title:'找春天', chars:'冲 寻 姑 娘 吐 柳 荡 桃 杏' },
-        {unit:1,id:'1-3', title:'开满鲜花的小路', chars:'鲜 邮 递 员 原 叔 车 局 礼' },
-        {unit:1,id:'1-4', title:'邓小平爷爷植树', chars:'邓 植 引 注 满 休 息' },
-
-        {unit:2,id:'2-5', title:'雷锋叔叔，你在哪里', chars:'锋 昨 冒 留 弯 背 洒 温 暖' },
-        {unit:2,id:'2-6', title:'千人糕', chars:'能 桌 味 买 具 甘 甜 菜 劳' },
-        {unit:2,id:'2-7', title:'一匹出色的马', chars:'匹 妹 波 纹 像 景 恋 舍 求' },
-
-        {unit:3,id:'3-8', title:'识字：神州谣', chars:'州 湾 岛 峡 民 族 谊' },
-        {unit:3,id:'3-9', title:'传统节日', chars:'端 粽 舟 鼓 族 民 庆 灯 贴 联 拜' },
-        {unit:3,id:'3-10', title:'中外节日', chars:'圣 旦 节 巧 蜡 烛 复 活 感 恩 狂 欢' },
-
-        {unit:4,id:'4-11', title:'彩虹', chars:'虹 雨 伞 挡 透 闪 灿 烂' },
-        {unit:4,id:'4-12', title:'我是一只小虫子', chars:'虫 垂 斑 觅 捕 伪 装' },
-        {unit:4,id:'4-13', title:'植物妈妈有办法', chars:'旅 胞 苗 裂 飘 翅 伸 挺' },
-
-        {unit:5,id:'5-14', title:'古诗两首（绝句/江南春）', chars:'绝 江 南 春 繁' },
-        {unit:5,id:'5-15', title:'日月潭', chars:'潭 台 湾 村 民 游 鸟 绿 岛' },
-        {unit:5,id:'5-16', title:'葡萄沟', chars:'葡 萄 结 挂 露 摇 珍 珠' },
-        {unit:5,id:'5-17', title:'火烧云', chars:'烧 云 霞 晚 炎 亮 红' },
-
-        {unit:6,id:'6-18', title:'呼风唤雨的世纪', chars:'呼 唤 世 纪 遥 控 卫 星 火 箭' },
-        {unit:6,id:'6-19', title:'张衡造地动仪', chars:'衡 测 铜 雕 狮 吞 吐 环 碰' },
-        {unit:6,id:'6-20', title:'“神笔马良”（节选）', chars:'笔 马 良 画 渔 贴 墙 变 真 假' },
-
-        {unit:7,id:'7-21', title:'曹冲称象', chars:'曹 冲 象 沉 称 秤 重 官 担' },
-        {unit:7,id:'7-22', title:'黄山奇石', chars:'黄 山 奇 峰 壮 怪 石' },
-        {unit:7,id:'7-23', title:'猴王出世（节选）', chars:'猴 王 世 洞 庙 石 蛋 裂' },
-
-        {unit:8,id:'8-24', title:'两个铁球同时落地', chars:'铁 球 同 时 落 实 验 重 物' },
-        {unit:8,id:'8-25', title:'太空生活趣事', chars:'太 空 航 天 员 餐 桌 带 笑' },
-        {unit:8,id:'8-26', title:'司马光', chars:'司 马 光 砸 缸 急 智' },
-        {unit:8,id:'8-27', title:'爱迪生', chars:'爱 迪 生 发 明 电 灯 实 验' },
+        {unit:1,id:"1-1",title:"古诗二首（村居/咏柳）",chars:"诗 村 童 碧 妆 绿 丝 剪"},
+        {unit:1,id:"1-2",title:"找春天",chars:"冲 寻 姑 娘 吐 柳 荡 桃 杏"},
+        {unit:1,id:"1-3",title:"开满鲜花的小路",chars:"鲜 邮 递 员 原 叔 局 堆 礼"},
+        {unit:1,id:"1-4",title:"邓小平爷爷植树",chars:"邓 植 格 引 注 满 休 息"},
+        {unit:2,id:"2-5",title:"雷锋叔叔，你在哪里",chars:"锋 昨 冒 留 弯 背 洒 温 暖"},
+        {unit:2,id:"2-6",title:"千人糕",chars:"能 桌 味 买 具 甘 甜 菜 劳"},
+        {unit:2,id:"2-7",title:"一匹出色的马",chars:"匹 妹 波 纹 像 景 恋 舍 求"},
+        {unit:3,id:"3-8",title:"识字1 神州谣",chars:"州 湾 岛 峡 民 族 谊 齐 奋"},
+        {unit:3,id:"3-9",title:"识字2 传统节日",chars:"贴 街 舟 艾 敬 转 团 热 闹"},
+        {unit:3,id:"3-10",title:"识字3 贝的故事",chars:"贝 壳 甲 骨 钱 币 与 财 关"},
+        {unit:3,id:"3-11",title:"识字4 中国美食",chars:"烧 茄 烤 鸭 肉 鸡 蛋 炒 饭"},
+        {unit:4,id:"4-12",title:"彩色的梦",chars:"彩 梦 森 拉 结 苹 般 精 灵"},
+        {unit:4,id:"4-13",title:"枫树上的喜鹊",chars:"伞 姨 弟 便 教 游 戏 母"},
+        {unit:4,id:"4-14",title:"沙滩上的童话",chars:"周 围 句 补 充 药 合 死 记"},
+        {unit:4,id:"4-15",title:"我是一只小虫子",chars:"屁 股 尿 净 屎 幸 使 劲"},
+        {unit:5,id:"5-16",title:"寓言二则（亡羊补牢/揠苗助长）",chars:"亡 牢 钻 劝 丢 告 筋 疲"},
+        {unit:5,id:"5-17",title:"画杨桃",chars:"图 课 摆 座 交 哈 页 抢 嘻"},
+        {unit:5,id:"5-18",title:"小马过河",chars:"愿 意 麦 该 伯 刻 突 掉"},
+        {unit:6,id:"6-19",title:"古诗二首（晓出净慈寺送林子方/绝句）",chars:"湖 莲 穷 荷 绝 含 岭 吴"},
+        {unit:6,id:"6-20",title:"雷雨",chars:"雷 乌 黑 压 垂 户 迎 扑"},
+        {unit:6,id:"6-21",title:"要是你在野外迷了路",chars:"指 针 帮 助 导 永 碰 特 积"},
+        {unit:6,id:"6-22",title:"太空生活趣事多",chars:"宇 宙 杯 失 板 客 易 浴 室"},
+        {unit:7,id:"7-23",title:"大象的耳朵",chars:"扇 慢 遇 兔 安 根 痛 最"},
+        {unit:7,id:"7-24",title:"蜘蛛开店",chars:"店 决 定 商 夫 终 完 换 期"},
+        {unit:7,id:"7-25",title:"青蛙卖泥塘",chars:"蛙 卖 搬 倒 籽"}
       ],
       "3上": [
         // ★ 三年级上（按人教版常见目录整理；可在"编辑"里微调）
@@ -613,6 +968,9 @@
     let currentDeck = [];
     let currentIndex = 0;
     let isStudyMode = false;
+    let isDictationMode = false;
+    let speechSynthesis = null;
+    let currentUtterance = null;
 
     function groupBy(arr, key){return arr.reduce((m,it)=>((m[it[key]]??=[]).push(it),m),{})}
     function unique(arr){return [...new Set(arr)]}
@@ -726,12 +1084,641 @@
 
     function startStudy(){
       if(buildDeck()) {
-        showCurrentCard();
-        document.getElementById('btnStart').style.display = 'none';
-        document.getElementById('btnNext').style.display = 'block';
-        document.getElementById('btnPrev').style.display = 'block';
-        document.getElementById('btnShuffle').style.display = 'block';
-        progressInfoEl.textContent = `1 / ${currentDeck.length}`;
+        const practiceMode = document.getElementById('practiceMode').value;
+        
+        if(practiceMode === 'dictation') {
+          startDictationMode();
+        } else {
+          showCurrentCard();
+          document.getElementById('btnStart').style.display = 'none';
+          document.getElementById('btnNext').style.display = 'block';
+          document.getElementById('btnPrev').style.display = 'block';
+          document.getElementById('btnShuffle').style.display = 'block';
+          progressInfoEl.textContent = `1 / ${currentDeck.length}`;
+        }
+      }
+    }
+
+    // ========== 听写功能 ==========
+    
+    // 语音合成配置
+    let VOICE_CONFIG = {
+      // 预录音方案：使用在线汉字读音库
+      usePreRecorded: true,
+      // 在线TTS API配置
+      onlineTTS: {
+        provider: 'edge', // 'baidu', 'aliyun', 'tencent', 'edge'
+        fallbackToNative: true
+      }
+    };
+
+    // 根据用户选择更新语音配置
+    function updateVoiceConfig() {
+      const quality = document.getElementById('voiceQuality').value;
+      
+      switch(quality) {
+        case 'high':
+          VOICE_CONFIG.usePreRecorded = true;
+          console.log('🎯 启用高质量语音（在线预录音）');
+          break;
+        case 'medium':
+          VOICE_CONFIG.usePreRecorded = false;
+          console.log('🎯 启用中等质量语音（优化TTS）');
+          break;
+        case 'basic':
+          VOICE_CONFIG.usePreRecorded = false;
+          console.log('🎯 启用基础质量语音（浏览器默认）');
+          break;
+      }
+    }
+
+    function initSpeechSynthesis() {
+      if ('speechSynthesis' in window) {
+        speechSynthesis = window.speechSynthesis;
+        
+        // 等待语音列表加载
+        if (speechSynthesis.getVoices().length === 0) {
+          speechSynthesis.addEventListener('voiceschanged', () => {
+            console.log('语音列表已加载');
+          });
+        }
+        
+        return true;
+      } else {
+        console.warn('浏览器不支持语音合成功能');
+        return false;
+      }
+    }
+
+    // 获取最佳中文语音（海外优化版本）
+    function getBestChineseVoice() {
+      const voices = speechSynthesis.getVoices();
+      
+      // 海外友好的语音选择（按优先级排序）
+      const preferredVoices = [
+        // Microsoft Edge 语音（海外质量最佳）
+        'Microsoft Xiaoxiao Online (Natural) - Chinese (Mainland)',
+        'Microsoft Xiaoxiao - Chinese (Simplified, PRC)',
+        'Microsoft Yunyang - Chinese (Mainland)',
+        'Microsoft Kangkang - Chinese (Mainland)',
+        
+        // Google Chrome 语音
+        'Google 普通话（中国大陆）',
+        'Google 中文（中国）',
+        'Chinese (China)',
+        
+        // Safari 语音（macOS/iOS）
+        'Ting-Ting (Enhanced)', // macOS增强版
+        'Ting-Ting', // macOS
+        'Sin-ji', // iOS
+        'Mei-Jia', // 台湾中文
+        
+        // 其他中文语音
+        'Chinese (Taiwan)',
+        'Chinese (Hong Kong)',
+        'zh-CN',
+        'zh-TW',
+        'zh-HK'
+      ];
+      
+      console.log('可用语音列表:', voices.map(v => `${v.name} (${v.lang})`));
+      
+      for (const preferred of preferredVoices) {
+        const voice = voices.find(v => 
+          v.name.includes(preferred) || 
+          v.name === preferred ||
+          (v.lang && (v.lang.includes('zh-CN') || v.lang.includes('zh-TW') || v.lang.includes('zh')))
+        );
+        if (voice) {
+          console.log('✅ 选择语音:', voice.name, '语言:', voice.lang);
+          return voice;
+        }
+      }
+      
+      // 最后尝试任何包含中文的语音
+      const anyChineseVoice = voices.find(v => 
+        v.lang && (v.lang.toLowerCase().includes('zh') || v.lang.toLowerCase().includes('chinese'))
+      );
+      
+      if (anyChineseVoice) {
+        console.log('✅ 找到中文语音:', anyChineseVoice.name);
+        return anyChineseVoice;
+      }
+      
+      console.warn('⚠️ 未找到中文语音，使用默认语音');
+      return voices[0] || null;
+    }
+
+    // 使用预录音方案（海外友好的在线语音源）
+    async function playPreRecordedAudio(character) {
+      // 海外可用的语音源，按优先级排序
+      const audioSources = [
+        // Google翻译语音（海外友好，无需API密钥）
+        `https://translate.google.com/translate_tts?ie=UTF-8&tl=zh&client=tw-ob&q=${encodeURIComponent(character)}`,
+        
+        // 有道词典语音（通常海外可用）
+        `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(character)}&type=1`,
+        
+        // Microsoft翻译语音（海外友好）
+        `https://www.bing.com/translator/api/language/Speak?locale=zh-Hans&gender=female&media=audio/mp3&text=${encodeURIComponent(character)}`,
+        
+        // Voice RSS（免费TTS服务，海外可用）
+        `https://api.voicerss.org/?key=demo&hl=zh-cn&c=MP3&f=44khz_16bit_stereo&src=${encodeURIComponent(character)}`,
+      ];
+
+      const playBtn = document.getElementById('btnPlayAudio');
+      const soundWaves = document.getElementById('soundWaves');
+
+      for (let i = 0; i < audioSources.length; i++) {
+        try {
+          console.log(`尝试语音源 ${i + 1}: ${audioSources[i]}`);
+          
+          const audio = new Audio();
+          audio.src = audioSources[i];
+          audio.volume = 1.0;
+          
+          // 添加播放状态指示
+          playBtn.textContent = '🔊 播放中...';
+          playBtn.disabled = true;
+          soundWaves.classList.add('playing');
+          
+          // 等待音频加载并播放
+          await new Promise((resolve, reject) => {
+            audio.oncanplaythrough = async () => {
+              try {
+                await audio.play();
+                resolve();
+              } catch (error) {
+                reject(error);
+              }
+            };
+            
+            audio.onended = () => {
+              playBtn.textContent = '🔊 播放';
+              playBtn.disabled = false;
+              soundWaves.classList.remove('playing');
+              resolve();
+            };
+            
+            audio.onerror = () => {
+              playBtn.textContent = '🔊 播放';
+              playBtn.disabled = false;
+              soundWaves.classList.remove('playing');
+              reject(new Error('音频加载失败'));
+            };
+            
+            // 设置超时
+            setTimeout(() => {
+              reject(new Error('音频加载超时'));
+            }, 5000);
+          });
+          
+          console.log(`✅ 语音源 ${i + 1} 播放成功`);
+          return true;
+          
+        } catch (error) {
+          console.warn(`语音源 ${i + 1} 失败:`, error);
+          
+          // 重置状态
+          playBtn.textContent = '🔊 播放';
+          playBtn.disabled = false;
+          soundWaves.classList.remove('playing');
+          
+          // 如果不是最后一个源，继续尝试下一个
+          if (i < audioSources.length - 1) {
+            console.log('尝试下一个语音源...');
+            continue;
+          }
+        }
+      }
+      
+      console.warn('所有在线语音源都失败了');
+      return false;
+    }
+
+    // 使用高质量TTS（海外优化版本）
+    async function playWithEdgeTTS(character) {
+      return new Promise((resolve, reject) => {
+        try {
+          const utterance = new SpeechSynthesisUtterance(character);
+          const voice = getBestChineseVoice();
+          
+          if (voice) {
+            utterance.voice = voice;
+            console.log(`🎯 使用语音: ${voice.name}`);
+          } else {
+            console.warn('⚠️ 未找到合适的中文语音');
+          }
+          
+          // 针对海外用户优化的语音设置
+          utterance.lang = voice ? voice.lang : 'zh-CN';
+          utterance.rate = 0.5; // 非常慢的语速，适合儿童学习
+          utterance.pitch = 1.2; // 稍高音调，更清晰
+          utterance.volume = 1.0;
+          
+          // 添加播放状态
+          const playBtn = document.getElementById('btnPlayAudio');
+          const soundWaves = document.getElementById('soundWaves');
+          
+          utterance.onstart = () => {
+            playBtn.textContent = '🔊 播放中...';
+            playBtn.disabled = true;
+            soundWaves.classList.add('playing');
+          };
+          
+          utterance.onend = () => {
+            playBtn.textContent = '🔊 播放';
+            playBtn.disabled = false;
+            soundWaves.classList.remove('playing');
+            resolve(true);
+          };
+          
+          utterance.onerror = (event) => {
+            console.error('优化TTS播放失败:', event);
+            playBtn.textContent = '🔊 播放';
+            playBtn.disabled = false;
+            soundWaves.classList.remove('playing');
+            reject(new Error('TTS播放失败'));
+          };
+          
+          // 确保停止之前的播放
+          speechSynthesis.cancel();
+          
+          // 等待一小段时间再播放，确保cancel生效
+          setTimeout(() => {
+            speechSynthesis.speak(utterance);
+          }, 100);
+          
+        } catch (error) {
+          console.warn('优化TTS初始化失败:', error);
+          reject(error);
+        }
+      });
+    }
+
+    // 添加特殊的语音增强函数（针对海外用户）
+    async function playWithEnhancedTTS(character) {
+      return new Promise((resolve, reject) => {
+        try {
+          // 为单个汉字添加适当的停顿和重音
+          const enhancedText = character;
+          
+          const utterance = new SpeechSynthesisUtterance(enhancedText);
+          const voice = getBestChineseVoice();
+          
+          if (voice) {
+            utterance.voice = voice;
+          }
+          
+          // 特别优化的设置
+          utterance.lang = 'zh-CN';
+          utterance.rate = 0.4; // 极慢语速
+          utterance.pitch = 1.3; // 高音调
+          utterance.volume = 1.0;
+          
+          const playBtn = document.getElementById('btnPlayAudio');
+          const soundWaves = document.getElementById('soundWaves');
+          
+          utterance.onstart = () => {
+            playBtn.textContent = '🔊 播放中...';
+            playBtn.disabled = true;
+            soundWaves.classList.add('playing');
+          };
+          
+          utterance.onend = () => {
+            playBtn.textContent = '🔊 播放';
+            playBtn.disabled = false;
+            soundWaves.classList.remove('playing');
+            resolve(true);
+          };
+          
+          utterance.onerror = (event) => {
+            playBtn.textContent = '🔊 播放';
+            playBtn.disabled = false;
+            soundWaves.classList.remove('playing');
+            reject(new Error('增强TTS播放失败'));
+          };
+          
+          speechSynthesis.cancel();
+          setTimeout(() => {
+            speechSynthesis.speak(utterance);
+          }, 150);
+          
+        } catch (error) {
+          reject(error);
+        }
+      });
+    }
+
+    // 智能语音播放函数（海外优化多方案降级）
+    async function speakText(text) {
+      // 防止重复播放
+      const playBtn = document.getElementById('btnPlayAudio');
+      if (playBtn.textContent.includes('播放中')) {
+        return;
+      }
+
+      const quality = document.getElementById('voiceQuality').value;
+      let success = false;
+
+      console.log(`🎯 开始语音播放，质量设置: ${quality}，字符: ${text}`);
+
+      // 方案1: 使用在线预录音（仅在高质量模式下）
+      if (quality === 'high' && VOICE_CONFIG.usePreRecorded) {
+        try {
+          console.log('🌐 尝试在线语音服务...');
+          success = await playPreRecordedAudio(text);
+          if (success) {
+            console.log('✅ 在线语音播放成功');
+            return;
+          }
+        } catch (error) {
+          console.warn('在线语音失败:', error);
+        }
+      }
+
+      // 方案2: 使用增强TTS（中高质量模式）
+      if (!success && (quality === 'high' || quality === 'medium')) {
+        try {
+          console.log('🎯 尝试增强TTS...');
+          success = await playWithEnhancedTTS(text);
+          if (success) {
+            console.log('✅ 增强TTS播放成功');
+            return;
+          }
+        } catch (error) {
+          console.warn('增强TTS失败:', error);
+        }
+      }
+
+      // 方案3: 使用优化TTS
+      if (!success) {
+        try {
+          console.log('🎮 尝试优化TTS...');
+          success = await playWithEdgeTTS(text);
+          if (success) {
+            console.log('✅ 优化TTS播放成功');
+            return;
+          }
+        } catch (error) {
+          console.warn('优化TTS失败:', error);
+        }
+      }
+
+      // 方案4: 降级到基础Web Speech API
+      if (!success) {
+        try {
+          console.log('🔄 使用基础TTS...');
+          await playWithNativeTTS(text);
+          console.log('✅ 基础TTS播放成功');
+        } catch (error) {
+          console.error('❌ 所有语音方案都失败了:', error);
+          
+          // 显示友好的错误提示
+          const playBtn = document.getElementById('btnPlayAudio');
+          const soundWaves = document.getElementById('soundWaves');
+          
+          playBtn.textContent = '🔊 播放失败';
+          playBtn.disabled = false;
+          soundWaves.classList.remove('playing');
+          
+          // 显示用户提示
+          setTimeout(() => {
+            playBtn.textContent = '🔊 播放';
+            alert('语音播放失败，可能原因：\n\n1. 网络连接问题\n2. 浏览器不支持中文语音\n3. 系统未安装中文语音包\n\n建议：\n• 检查网络连接\n• 使用Chrome或Edge浏览器\n• 在设置中降低语音质量');
+          }, 2000);
+        }
+      }
+    }
+
+    // 基础Web Speech API播放（降级方案）
+    async function playWithNativeTTS(text) {
+      return new Promise((resolve, reject) => {
+        if (!speechSynthesis) {
+          if (!initSpeechSynthesis()) {
+            reject(new Error('浏览器不支持语音功能'));
+            return;
+          }
+        }
+
+        // 停止当前播放的语音
+        speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        const voice = getBestChineseVoice();
+        
+        if (voice) {
+          utterance.voice = voice;
+        }
+        
+        // 优化的语音设置
+        utterance.lang = 'zh-CN';
+        utterance.rate = 0.6; // 更慢的语速
+        utterance.pitch = 1.1; // 稍高音调，更清晰
+        utterance.volume = 1.0;
+
+        // 播放状态管理
+        const playBtn = document.getElementById('btnPlayAudio');
+        const soundWaves = document.getElementById('soundWaves');
+
+        utterance.onstart = () => {
+          soundWaves.classList.add('playing');
+          playBtn.textContent = '🔊 播放中...';
+          playBtn.disabled = true;
+        };
+
+        utterance.onend = () => {
+          soundWaves.classList.remove('playing');
+          playBtn.textContent = '🔊 播放';
+          playBtn.disabled = false;
+          resolve();
+        };
+
+        utterance.onerror = (event) => {
+          console.error('原生TTS播放错误:', event);
+          soundWaves.classList.remove('playing');
+          playBtn.textContent = '🔊 播放';
+          playBtn.disabled = false;
+          reject(new Error('原生TTS播放失败'));
+        };
+
+        speechSynthesis.speak(utterance);
+      });
+    }
+
+    function startDictationMode() {
+      isDictationMode = true;
+      
+      // 更新语音配置
+      updateVoiceConfig();
+      
+      // 显示听写界面，隐藏识字卡
+      document.getElementById('dictationContainer').style.display = 'block';
+      document.getElementById('currentCard').parentElement.style.display = 'none';
+      
+      // 显示听写控制按钮，隐藏识字卡按钮
+      document.getElementById('btnStart').style.display = 'none';
+      document.getElementById('btnNext').style.display = 'none';
+      document.getElementById('btnPrev').style.display = 'none';
+      document.getElementById('btnShuffle').style.display = 'none';
+      
+      document.getElementById('btnCheck').style.display = 'block';
+      document.getElementById('btnNextDictation').style.display = 'none';
+      document.getElementById('btnReplay').style.display = 'block';
+      
+      // 初始化语音功能
+      initSpeechSynthesis();
+      
+      // 显示语音质量提示
+      const quality = document.getElementById('voiceQuality').value;
+      const qualityText = {
+        'high': '高质量在线语音',
+        'medium': '中等质量系统语音', 
+        'basic': '基础质量浏览器语音'
+      };
+      
+      console.log(`🎯 听写模式启动，使用 ${qualityText[quality]}`);
+      
+      // 显示当前题目
+      showCurrentDictation();
+      
+      // 自动播放第一个字的读音
+      setTimeout(() => {
+        playCurrentCharAudio();
+      }, 500);
+    }
+
+    function showCurrentDictation() {
+      if(!isDictationMode || currentDeck.length === 0) return;
+      
+      const current = currentDeck[currentIndex];
+      
+      // 清空输入框和结果区域
+      const inputEl = document.getElementById('dictationInput');
+      const resultEl = document.getElementById('resultArea');
+      
+      inputEl.value = '';
+      inputEl.className = '';
+      resultEl.style.display = 'none';
+      resultEl.className = 'result-area';
+      
+      // 重置拼音显示
+      document.getElementById('dictationPinyin').textContent = '点击播放听声音';
+      
+      // 更新进度
+      progressInfoEl.textContent = `听写练习 ${currentIndex + 1} / ${currentDeck.length}`;
+      
+      // 控制按钮状态
+      document.getElementById('btnCheck').style.display = 'block';
+      document.getElementById('btnNextDictation').style.display = 'none';
+      
+      // 聚焦输入框
+      inputEl.focus();
+    }
+
+    function playCurrentCharAudio() {
+      if(!isDictationMode || currentDeck.length === 0) return;
+      
+      const current = currentDeck[currentIndex];
+      
+      // 显示拼音提示（播放后显示）
+      setTimeout(() => {
+        document.getElementById('dictationPinyin').textContent = current.py || '暂无拼音';
+      }, 100);
+      
+      // 播放汉字读音
+      speakText(current.ch);
+    }
+
+    function checkDictationAnswer() {
+      const inputEl = document.getElementById('dictationInput');
+      const resultEl = document.getElementById('resultArea');
+      const userAnswer = inputEl.value.trim();
+      const correctAnswer = currentDeck[currentIndex].ch;
+      const correctPinyin = currentDeck[currentIndex].py;
+      
+      if(!userAnswer) {
+        alert('请先输入答案');
+        return;
+      }
+      
+      const isCorrect = userAnswer === correctAnswer;
+      
+      // 显示结果
+      resultEl.style.display = 'block';
+      
+      if(isCorrect) {
+        resultEl.className = 'result-area correct';
+        document.getElementById('resultIcon').textContent = '✓';
+        document.getElementById('resultText').textContent = '回答正确！';
+        inputEl.className = 'correct';
+      } else {
+        resultEl.className = 'result-area incorrect';
+        document.getElementById('resultIcon').textContent = '✗';
+        document.getElementById('resultText').textContent = '答案不对，再试试吧';
+        inputEl.className = 'incorrect';
+      }
+      
+      // 显示正确答案
+      document.getElementById('correctAnswer').textContent = correctAnswer;
+      document.getElementById('correctPinyin').textContent = correctPinyin || '';
+      
+      // 控制按钮状态
+      document.getElementById('btnCheck').style.display = 'none';
+      if(currentIndex < currentDeck.length - 1) {
+        document.getElementById('btnNextDictation').style.display = 'block';
+      } else {
+        document.getElementById('btnNextDictation').textContent = '完成练习';
+        document.getElementById('btnNextDictation').style.display = 'block';
+      }
+    }
+
+    function nextDictation() {
+      if(currentIndex < currentDeck.length - 1) {
+        currentIndex++;
+        showCurrentDictation();
+        // 自动播放下一个字
+        setTimeout(() => {
+          playCurrentCharAudio();
+        }, 300);
+      } else {
+        // 练习完成
+        finishDictation();
+      }
+    }
+
+    function finishDictation() {
+      // 计算正确率（这里简化处理，实际应用中可以记录每个字的正确性）
+      const totalChars = currentDeck.length;
+      alert(`🎉 听写练习完成！\n\n📊 练习统计：\n• 总字数：${totalChars} 个\n• 练习模式：听写训练\n\n💡 提示：可以多次练习来加深记忆！\n\n点击确定返回主界面。`);
+      resetStudy();
+    }
+
+    // 添加触摸设备的优化
+    function optimizeForTouch() {
+      // 检测触摸设备
+      if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+        // 为触摸设备添加额外的交互改进
+        const inputEl = document.getElementById('dictationInput');
+        
+        // 防止移动端键盘遮挡
+        inputEl.addEventListener('focus', () => {
+          setTimeout(() => {
+            inputEl.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'center',
+              inline: 'nearest'
+            });
+          }, 300);
+        });
+        
+        // 优化软键盘体验
+        inputEl.addEventListener('blur', () => {
+          // 软键盘收起后重新调整视图
+          setTimeout(() => {
+            window.scrollTo(0, 0);
+          }, 100);
+        });
       }
     }
 
@@ -767,14 +1754,52 @@
     currentCardEl.addEventListener('click', ()=>{currentCardEl.classList.toggle('flipped')});
     bookSelect.addEventListener('change', ()=>{renderLessonList(); resetStudy()});
     
+    // 听写功能事件绑定
+    document.getElementById('btnPlayAudio').onclick = playCurrentCharAudio;
+    document.getElementById('btnCheck').onclick = checkDictationAnswer;
+    document.getElementById('btnNextDictation').onclick = nextDictation;
+    document.getElementById('btnReplay').onclick = playCurrentCharAudio;
+    
+    // 听写输入框回车键检查答案
+    document.getElementById('dictationInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const checkBtn = document.getElementById('btnCheck');
+        const nextBtn = document.getElementById('btnNextDictation');
+        
+        if (checkBtn.style.display !== 'none') {
+          checkDictationAnswer();
+        } else if (nextBtn.style.display !== 'none') {
+          nextDictation();
+        }
+      }
+    });
+    
     function resetStudy(){
       isStudyMode = false;
+      isDictationMode = false;
       currentDeck = [];
       currentIndex = 0;
+      
+      // 停止语音播放
+      if(speechSynthesis) {
+        speechSynthesis.cancel();
+      }
+      
+      // 重置界面显示
+      document.getElementById('dictationContainer').style.display = 'none';
+      document.getElementById('currentCard').parentElement.style.display = 'flex';
+      
+      // 重置按钮状态
       document.getElementById('btnStart').style.display = 'block';
       document.getElementById('btnNext').style.display = 'none';
       document.getElementById('btnPrev').style.display = 'none';
       document.getElementById('btnShuffle').style.display = 'none';
+      
+      // 隐藏听写按钮
+      document.getElementById('btnCheck').style.display = 'none';
+      document.getElementById('btnNextDictation').style.display = 'none';
+      document.getElementById('btnReplay').style.display = 'none';
+      
       progressInfoEl.textContent = '点击"开始学习"开始识字';
       currentHanziEl.textContent = '字';
       currentPinyinEl.textContent = 'zì';
@@ -842,6 +1867,15 @@
       renderLessonList();
       addEditButton();
       resetStudy();
+      optimizeForTouch();
+      
+      // 显示听写功能介绍（仅首次访问）
+      if (!localStorage.getItem('dictation-intro-shown-v2')) {
+        setTimeout(() => {
+          alert('🎉 听写功能全新升级！\n\n✨ 新增海外友好语音支持：\n• 🌐 Google翻译语音（全球可用）\n• 🎯 Microsoft语音（海外优化）\n• 📱 多重降级保障机制\n\n🚀 使用方法：\n1️⃣ 点击"设置"→选择"听写模式"\n2️⃣ 根据网络情况选择语音质量\n3️⃣ 开始学习，享受高质量中文发音\n\n💡 海外用户推荐选择"高质量"获得最佳体验！');
+          localStorage.setItem('dictation-intro-shown-v2', 'true');
+        }, 1000);
+      }
     }
 
     // 页面加载完成后初始化
