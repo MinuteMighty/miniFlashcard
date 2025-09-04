@@ -1,19 +1,12 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "flashcard_cn.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/",
-      "dest": "/flashcard_cn.html"
+      "source": "/",
+      "destination": "/flashcard_cn.html"
     },
     {
-      "src": "/flashcard",
-      "dest": "/flashcard_cn.html"
+      "source": "/flashcard",
+      "destination": "/flashcard_cn.html"
     }
   ],
   "headers": [
