@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="version" content="2.1.0" />
 <title>识字卡｜人教版 一～二年级（上/下）</title>
 <style>
   :root {
@@ -857,6 +858,13 @@
       <button id="btnNextDictation" class="ghost" style="display:none;">下一个</button>
       <button id="btnReplay" class="ghost" style="display:none;">🔊 重播</button>
     </div>
+    
+    <!-- 版本信息 -->
+    <div style="text-align: center; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border);">
+      <div style="font-size: 11px; color: var(--text-muted); opacity: 0.7;">
+        v<span id="footerVersion">2.1.0</span>
+      </div>
+    </div>
   </div>
 
   <!-- 设置弹窗 -->
@@ -905,6 +913,12 @@
       <div class="btn-group">
         <button id="btnCloseSettings" class="secondary">关闭</button>
         <button id="btnStartStudy">开始学习</button>
+      </div>
+      
+      <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+        <div style="font-size: 12px; color: var(--text-muted);">
+          版本 v<span id="appVersion">2.1.0</span> | 更新日期 <span id="versionDate">2025-09-07</span>
+        </div>
       </div>
     </div>
   </div>
@@ -964,6 +978,10 @@
   <!-- pinyin-pro（拼音库，CDN） -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pinyin-pro/3.27.0/index.js"></script>
   <script>
+    // ========== 版本信息 ==========
+    const APP_VERSION = '2.1.0';
+    const VERSION_DATE = '2025-09-07';
+    
     // ========== 数据区 ==========
     // 结构：DATA[册别] = LESSONS[]
     // 其中 LESSONS[]: {unit:数字,id:"单元-序号",title:"课文标题",chars:"空格分隔的单字列表"}
@@ -2520,6 +2538,17 @@
       }
       
       console.log('所有事件绑定完成');
+      
+      // 更新版本信息
+      const versionEl = document.getElementById('appVersion');
+      const dateEl = document.getElementById('versionDate');
+      const footerVersionEl = document.getElementById('footerVersion');
+      
+      if (versionEl) versionEl.textContent = APP_VERSION;
+      if (dateEl) dateEl.textContent = VERSION_DATE;
+      if (footerVersionEl) footerVersionEl.textContent = APP_VERSION;
+      
+      console.log(`应用版本: v${APP_VERSION} (${VERSION_DATE})`);
       
       // 显示听写功能介绍（仅首次访问）
       if (!localStorage.getItem('dictation-intro-shown-v2')) {
