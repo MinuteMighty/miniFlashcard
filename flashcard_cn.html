@@ -2214,8 +2214,6 @@
     document.getElementById('btnStartStudy').onclick = ()=>{startStudy(); document.getElementById('settingsModal').classList.remove('show');};
     document.getElementById('btnSettings').onclick = ()=>{document.getElementById('settingsModal').classList.add('show');};
     document.getElementById('btnCloseSettings').onclick = ()=>{document.getElementById('settingsModal').classList.remove('show');};
-    currentCardEl.addEventListener('click', ()=>{currentCardEl.classList.toggle('flipped')});
-    bookSelect.addEventListener('change', ()=>{renderLessonList(); resetStudy()});
     
     // 打印功能事件绑定
     console.log('开始绑定打印按钮事件...');
@@ -2397,7 +2395,15 @@
       const btnCloseSettings = document.getElementById('btnCloseSettings');
       if (btnCloseSettings) btnCloseSettings.onclick = ()=>{document.getElementById('settingsModal').classList.remove('show');};
       
-      if (currentCardEl) currentCardEl.addEventListener('click', ()=>{currentCardEl.classList.toggle('flipped')});
+      // 绑定卡片翻面事件
+      const currentCard = document.getElementById('currentCard');
+      if (currentCard) {
+        currentCard.addEventListener('click', ()=>{currentCard.classList.toggle('flipped')});
+        console.log('卡片翻面事件绑定成功');
+      } else {
+        console.error('未找到currentCard元素');
+      }
+      
       if (bookSelect) bookSelect.addEventListener('change', ()=>{renderLessonList(); resetStudy()});
       
       // 打印功能事件绑定
