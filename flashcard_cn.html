@@ -520,6 +520,146 @@
     letter-spacing: 0.1em;
   }
 
+  /* 田字格打印样式 */
+  .tianzi-grid {
+    display: inline-block;
+    width: 14mm;
+    height: 14mm;
+    border: 1px solid #000;
+    position: relative;
+    margin: 0;
+    vertical-align: top;
+    box-sizing: border-box;
+  }
+  
+  .tianzi-grid::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #000;
+    border-top: 1px dashed #000;
+    transform: translateY(-50%);
+  }
+  
+  .tianzi-grid::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: #000;
+    border-left: 1px dashed #000;
+    transform: translateX(-50%);
+  }
+  
+  .tianzi-char {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14mm;
+    font-weight: normal;
+    line-height: 1;
+    font-family: 'KaiTi', '楷体', 'STKaiti', serif;
+    color: transparent;
+    -webkit-text-stroke: 0.5px #000;
+  }
+  
+  .tianzi-char.trace {
+    color: transparent;
+    -webkit-text-stroke: 0.5px #000;
+  }
+  
+  .tianzi-stroke-order {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 8px;
+    color: #666;
+    line-height: 1;
+  }
+  
+  .print-page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 20mm;
+    background: white;
+    font-family: 'SimSun', '宋体', serif;
+    font-size: 12pt;
+    line-height: 1.5;
+    box-sizing: border-box;
+  }
+  
+  .print-header {
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 10px;
+  }
+  
+  .print-title {
+    font-size: 18pt;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .print-subtitle {
+    font-size: 12pt;
+    color: #666;
+  }
+  
+  .print-grid-container {
+    display: block;
+    margin-bottom: 20px;
+    line-height: 0;
+  }
+  
+  .print-section {
+    margin-bottom: 30px;
+  }
+  
+  .print-section-title {
+    font-size: 14pt;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+  }
+  
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    
+    .print-page, .print-page * {
+      visibility: visible;
+    }
+    
+    .print-page {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      margin: 0;
+      padding: 20mm;
+    }
+    
+    .tianzi-grid {
+      break-inside: avoid;
+    }
+    
+    .tianzi-char {
+      color: transparent !important;
+      -webkit-text-stroke: 0.5px #000 !important;
+      font-weight: normal !important;
+    }
+  }
+
   /* 响应式调整 */
   @media (max-width: 480px) {
     .card{
@@ -639,7 +779,10 @@
 <body>
   <header>
     <h1>识字卡</h1>
-    <button id="btnSettings" class="settings-btn">⚙️ 设置</button>
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <button id="btnPrint" class="settings-btn" style="padding: 8px 12px; font-size: 12px;">🖨️ 打印</button>
+      <button id="btnSettings" class="settings-btn">⚙️ 设置</button>
+    </div>
   </header>
 
   <div class="main-container">
@@ -721,8 +864,8 @@
         <select id="bookSelect">
           <option value="1上">一年级上</option>
           <option value="1下">一年级下</option>
-          <option value="2上">二年级上</option>
-          <option value="2下" selected>二年级下</option>
+          <option value="2上" selected>二年级上</option>
+          <option value="2下">二年级下</option>
           <option value="3上">三年级上</option>
           <option value="3下">三年级下</option>
         </select>
@@ -774,6 +917,38 @@
     </div>
   </div>
 
+  <!-- 打印设置弹窗 -->
+  <div class="modal" id="printModal">
+    <div class="dialog">
+      <h3>田字格生字打印</h3>
+      
+      <div class="setting-group">
+        <label>打印范围：</label>
+        <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 12px;">
+          将打印当前选择的课文范围内的所有生字
+        </div>
+        <div id="printCharsList" style="background: var(--bg-primary); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-top: 8px; min-height: 40px; font-size: 14px; line-height: 1.6;">
+          正在加载生字列表...
+        </div>
+      </div>
+      
+      <div class="setting-group">
+        <label>打印选项：</label>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+            <input type="checkbox" id="printTraceMode">
+            <span>仅打印描字（空心字）</span>
+          </label>
+        </div>
+      </div>
+      
+      <div class="btn-group">
+        <button id="btnCancelPrint" class="secondary">取消</button>
+        <button id="btnConfirmPrint">打印</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 数据编辑器（导入/导出 JSON） -->
   <div class="modal" id="editModal">
     <div class="dialog">
@@ -800,6 +975,51 @@
     // ========== 数据区 ==========
     // 结构：DATA[册别] = LESSONS[]
     // 其中 LESSONS[]: {unit:数字,id:"单元-序号",title:"课文标题",chars:"空格分隔的单字列表"}
+    
+    // 笔画顺序数据（常用汉字的笔画数）
+    const STROKE_ORDER = {
+      // 一年级上
+      '了': 2, '子': 3, '人': 2, '大': 3, '月': 4, '儿': 2, '头': 5, '里': 7, '可': 5, '东': 5, '西': 6,
+      '天': 4, '四': 5, '是': 9, '在': 6, '后': 6, '我': 7, '好': 6, '长': 4, '比': 4, '巴': 4, '把': 7,
+      '下': 3, '个': 3, '雨': 8, '们': 5, '问': 6, '有': 6, '半': 5, '从': 4, '你': 7, '才': 3, '明': 8,
+      '同': 6, '学': 8, '自': 6, '己': 3, '衣': 6, '白': 5, '的': 8, '又': 2, '和': 8, '竹': 6, '牙': 4,
+      '马': 3, '用': 5, '几': 2, '只': 5, '石': 5, '多': 6, '出': 5, '见': 4, '对': 5, '妈': 6, '全': 6, '回': 6,
+      
+      // 一年级下
+      '吃': 6, '叫': 5, '主': 5, '江': 6, '住': 7, '没': 7, '以': 4, '会': 6, '走': 7, '北': 5, '京': 8, '门': 3, '广': 3,
+      '过': 6, '各': 6, '种': 9, '样': 10, '伙': 6, '伴': 7, '这': 7, '太': 4, '阳': 6, '校': 10, '金': 8, '秋': 9, '因': 6, '为': 4,
+      '他': 6, '河': 8, '说': 9, '也': 3, '地': 6, '听': 7, '哥': 10, '乐': 5, '单': 8, '呼': 8, '居': 8, '招': 8, '快': 7,
+      '讲': 6, '许': 6, '很': 9, '当': 6, '玩': 8, '行': 6, '音': 9, '乡': 3, '前': 9, '光': 6, '低': 7, '床': 7, '故': 9, '思': 9,
+      '再': 6, '外': 5, '爸': 8, '晚': 11, '看': 9, '色': 6, '笑': 10, '午': 4, '节': 5, '叶': 5, '真': 10, '米': 6, '豆': 7, '分': 4,
+      '兴': 6, '到': 8, '那': 6, '千': 3, '成': 6, '着': 11, '高': 10, '无': 4, '尖': 6, '树': 9, '爱': 10, '采': 8, '角': 7, '首': 9,
+      '美': 9, '亮': 9, '台': 5, '朵': 6, '机': 6, '放': 8, '鱼': 8, '加': 5, '边': 5, '吗': 6, '吧': 7, '呀': 7, '呢': 8, '直': 8,
+      '病': 10, '医': 7, '别': 7, '干': 3, '奇': 8, '七': 2, '星': 9, '吓': 6, '怕': 8, '跟': 13, '家': 10, '羊': 6, '象': 11, '都': 10,
+      '捉': 10, '条': 7, '爬': 8, '姐': 8, '您': 11, '草': 9, '房': 8,
+      
+      // 二年级上
+      '两': 7, '哪': 9, '宽': 10, '就': 12, '孩': 9, '晴': 12, '肚': 7, '皮': 5, '跳': 13, '顶': 8, '作': 7, '傍': 12, '变': 8, '带': 9,
+      '洋': 9, '海': 9, '给': 9, '坏': 7, '极': 7, '片': 4, '识': 7, '它': 5, '如': 6, '她': 6, '娃': 9, '法': 8, '毛': 4, '更': 7, '脚': 11, '知': 8,
+      '做': 11, '底': 8, '岁': 6, '然': 12, '杆': 7, '柱': 9, '称': 10, '秤': 10, '站': 10, '船': 11, '候': 10, '评': 7, '及': 3, '奖': 9, '并': 6, '幅': 12, '另': 5, '报': 7, '拿': 9, '画': 8,
+      '写': 5, '今': 4, '信': 9, '封': 9, '圆': 10, '灯': 6, '笔': 10, '珠': 10, '支': 4, '电': 5, '事': 8, '先': 6, '发': 5, '哄': 9, '闭': 6, '沉': 7, '脸': 11, '窗': 12,
+      '依': 8, '川': 3, '尽': 6, '层': 7, '挂': 9, '照': 13, '炉': 8, '烟': 10, '楼': 13, '黄': 11, '些': 8, '部': 10, '位': 7, '升': 4, '南': 9, '巨': 4, '闪': 5, '每': 7,
+      '丽': 7, '华': 6, '迹': 9, '央': 5, '名': 6, '展': 10, '披': 8, '现': 8, '胜': 9, '利': 7, '市': 5, '客': 9, '坡': 8, '城': 9, '老': 6, '枝': 8, '收': 6, '起': 10, '份': 6,
+      '井': 4, '际': 7, '话': 8, '喝': 12, '沿': 8, '渴': 12, '观': 6, '答': 12, '阵': 6, '却': 7, '将': 9, '夜': 8, '枯': 9, '朗': 10, '面': 9, '纷': 7,
+      '邻': 7, '谢': 12, '治': 8, '怪': 8, '棵': 12, '想': 13, '盯': 7, '言': 7, '业': 5, '产': 6, '认': 4, '道': 12, '洪': 9, '灾': 7, '被': 10, '难': 10,
+      '军': 6, '伍': 6, '师': 6, '士': 3, '担': 8, '扁': 9, '志': 7, '站': 10, '度': 9, '泼': 8, '炮': 9, '忘': 7, '龙': 5, '阴': 6, '似': 6, '苍': 7, '茫': 9, '惊': 11, '危': 6, '敢': 11, '野': 11,
+      '久': 3, '切': 4, '于': 3, '论': 6, '岸': 8, '屋': 9, '散': 12, '步': 7,
+      
+      // 二年级下
+      '诗': 8, '村': 7, '童': 12, '碧': 14, '妆': 6, '绿': 11, '丝': 5, '剪': 11, '冲': 6, '寻': 6, '姑': 8, '娘': 10, '吐': 6, '柳': 9, '荡': 9, '桃': 10, '杏': 7,
+      '鲜': 14, '邮': 7, '递': 10, '员': 7, '原': 10, '叔': 8, '局': 7, '堆': 11, '礼': 5, '邓': 4, '植': 12, '格': 10, '引': 4, '注': 8, '满': 13, '休': 6, '息': 10,
+      '锋': 12, '昨': 9, '冒': 9, '留': 10, '弯': 9, '背': 9, '洒': 9, '温': 12, '暖': 13, '能': 10, '桌': 10, '味': 8, '买': 6, '具': 8, '甘': 5, '甜': 11, '菜': 11, '劳': 7,
+      '匹': 4, '妹': 8, '波': 8, '纹': 7, '像': 14, '景': 12, '恋': 10, '舍': 8, '求': 7, '州': 6, '湾': 12, '岛': 7, '峡': 9, '民': 5, '族': 11, '谊': 10, '齐': 6, '奋': 8,
+      '贴': 9, '街': 12, '舟': 6, '艾': 5, '敬': 12, '转': 8, '团': 6, '热': 10, '闹': 8, '贝': 4, '壳': 7, '甲': 5, '骨': 9, '钱': 10, '币': 4, '与': 3, '财': 7, '关': 6,
+      '烧': 10, '茄': 8, '烤': 10, '鸭': 10, '肉': 6, '鸡': 7, '蛋': 11, '炒': 8, '饭': 7, '彩': 11, '梦': 11, '森': 12, '拉': 8, '结': 9, '苹': 8, '般': 10, '精': 14, '灵': 7,
+      '伞': 6, '姨': 9, '弟': 7, '便': 9, '教': 11, '游': 12, '戏': 6, '母': 5, '周': 8, '围': 7, '句': 5, '补': 7, '充': 6, '药': 9, '合': 6, '死': 6, '记': 5, '屁': 7, '股': 8, '尿': 7, '净': 8, '屎': 9, '幸': 8, '使': 8, '劲': 7,
+      '亡': 3, '牢': 7, '钻': 10, '劝': 4, '丢': 6, '告': 7, '筋': 12, '疲': 10, '图': 8, '课': 10, '摆': 13, '座': 10, '交': 6, '哈': 9, '页': 6, '抢': 7, '嘻': 15, '愿': 14, '意': 13, '麦': 7, '该': 8, '伯': 7, '刻': 8, '突': 9, '掉': 11,
+      '湖': 12, '莲': 10, '穷': 7, '荷': 10, '绝': 9, '含': 7, '岭': 8, '吴': 7, '雷': 13, '乌': 4, '黑': 12, '压': 6, '垂': 8, '户': 4, '迎': 7, '扑': 5, '指': 9, '针': 10, '帮': 9, '助': 7, '导': 6, '永': 5, '碰': 13, '特': 10, '积': 10,
+      '宇': 6, '宙': 8, '杯': 8, '失': 5, '板': 8, '客': 9, '易': 8, '浴': 10, '室': 9, '扇': 10, '慢': 14, '遇': 12, '兔': 8, '安': 6, '根': 10, '痛': 12, '最': 12, '店': 8, '决': 6, '定': 8, '商': 11, '夫': 4, '终': 8, '完': 7, '换': 10, '期': 12, '蛙': 12, '卖': 8, '搬': 13, '倒': 10, '籽': 9
+    };
     const DATA = {
               "1上": [
           {unit:1,id:"1-1",title:"秋天",chars:"了 子 人 大"},
@@ -1022,6 +1242,10 @@
       const checks = [...listEl.querySelectorAll('input[type="checkbox"]')].filter(c=>c.checked);
       const chosenIds = new Set(checks.map(c=>c.dataset.id));
       const pool = [];
+      
+      console.log('当前册别:', book); // 调试信息
+      console.log('选中的课文:', chosenIds); // 调试信息
+      
       LESSONS.forEach(l=>{
         if(chosenIds.size===0 || chosenIds.has(l.id)){
           const chars = (l.chars||'').split(/\s+/).filter(Boolean);
@@ -1741,6 +1965,250 @@
       }, 2000);
     }
 
+    // ========== 打印功能 ==========
+    
+    // 获取笔画数
+    function getStrokeCount(char) {
+      return STROKE_ORDER[char] || '?';
+    }
+    
+    // 更新打印生字列表显示
+    function updatePrintCharsList() {
+      const charsListEl = document.getElementById('printCharsList');
+      
+      if (!charsListEl) {
+        console.error('找不到 printCharsList 元素');
+        return;
+      }
+      
+      // 先显示加载状态
+      charsListEl.innerHTML = '<span style="color: #666;">正在收集生字...</span>';
+      
+      // 延迟执行，确保DOM已准备好
+      setTimeout(() => {
+        const chars = collectChars();
+        
+        console.log('收集到的生字:', chars); // 调试信息
+        
+        if (!chars || chars.length === 0) {
+          charsListEl.innerHTML = '<span style="color: #ff6b6b;">⚠️ 没有可打印的生字，请先在设置中选择课文</span>';
+          return;
+        }
+        
+        // 按每行显示10个字符
+        let html = `<div style="margin-bottom: 8px;"><strong>共 ${chars.length} 个生字：</strong></div>`;
+        html += '<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">';
+        
+        chars.forEach((char, index) => {
+          const strokeCount = getStrokeCount(char);
+          html += `<span style="display: inline-block; padding: 4px 8px; background: #fff; border: 1px solid var(--border); border-radius: 4px; font-size: 16px; font-weight: bold;">${char}</span>`;
+          
+          // 每行显示10个字符后换行
+          if ((index + 1) % 10 === 0) {
+            html += '<br>';
+          }
+        });
+        
+        html += '</div>';
+        
+        // 添加笔画数统计
+        const strokeCounts = chars.map(char => getStrokeCount(char)).filter(count => count !== '?');
+        if (strokeCounts.length > 0) {
+          const avgStrokes = (strokeCounts.reduce((sum, count) => sum + count, 0) / strokeCounts.length).toFixed(1);
+          html += `<div style="margin-top: 8px; font-size: 12px; color: var(--text-muted);">平均笔画数：${avgStrokes}画</div>`;
+        }
+        
+        charsListEl.innerHTML = html;
+      }, 100);
+    }
+    
+    // 生成田字格HTML
+    function generateTianziGrid(char, showStrokeOrder = false, isTraceMode = false) {
+      const strokeCount = getStrokeCount(char);
+      const strokeOrderHtml = showStrokeOrder ? `<div class="tianzi-stroke-order">${strokeCount}</div>` : '';
+      const traceClass = isTraceMode ? ' trace' : '';
+      
+      return `
+        <div class="tianzi-grid">
+          <div class="tianzi-char${traceClass}">${char}</div>
+          ${strokeOrderHtml}
+        </div>
+      `;
+    }
+    
+    // 生成打印内容
+    function generatePrintContent() {
+      const chars = collectChars();
+      if (chars.length === 0) {
+        alert('没有可打印的生字，请先在设置中选择课文');
+        return null;
+      }
+      
+      const isTraceMode = document.getElementById('printTraceMode').checked;
+      
+      let html = `
+        <div class="print-page">
+          <div class="print-grid-container">
+      `;
+      
+      if (isTraceMode) {
+        // 描字模式：每行9个田字格都写生字（空心字）
+        chars.forEach((char, index) => {
+          // 每行9个田字格都写生字
+          for (let i = 0; i < 9; i++) {
+            html += generateTianziGrid(char, false, true);
+          }
+          
+          // 每行9个田字格后换行
+          html += '<br>';
+        });
+      } else {
+        // 默认模式：每行第一个田字格写生字，剩下8个都是空的
+        chars.forEach((char, index) => {
+          // 第一个田字格写生字
+          html += generateTianziGrid(char, false, false);
+          
+          // 剩下8个田字格都是空的
+          for (let i = 0; i < 8; i++) {
+            html += generateTianziGrid('', false, false);
+          }
+          
+          // 每行9个田字格后换行
+          html += '<br>';
+        });
+      }
+      
+      html += `
+          </div>
+        </div>
+      `;
+      
+      return html;
+    }
+    
+    // 执行打印
+    function executePrint() {
+      const printHtml = generatePrintContent();
+      if (!printHtml) return;
+      
+      // 创建打印窗口
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>田字格生字练习</title>
+          <style>
+            body { margin: 0; padding: 0; font-family: 'SimSun', '宋体', serif; }
+            .tianzi-grid {
+              display: inline-block;
+              width: 18mm;
+              height: 18mm;
+              border: 1px solid #000;
+              position: relative;
+              margin: 0;
+              vertical-align: top;
+              box-sizing: border-box;
+            }
+            .tianzi-grid::before {
+              content: '';
+              position: absolute;
+              top: 50%;
+              left: 0;
+              right: 0;
+              height: 1px;
+              background: #000;
+              border-top: 1px dashed #000;
+              transform: translateY(-50%);
+            }
+            .tianzi-grid::after {
+              content: '';
+              position: absolute;
+              left: 50%;
+              top: 0;
+              bottom: 0;
+              width: 1px;
+              background: #000;
+              border-left: 1px dashed #000;
+              transform: translateX(-50%);
+            }
+            .tianzi-char {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              font-size: 14mm;
+              font-weight: normal;
+              line-height: 1;
+              font-family: 'KaiTi', '楷体', 'STKaiti', serif;
+              color: transparent;
+              -webkit-text-stroke: 0.5px #000;
+            }
+            .tianzi-char.trace {
+              color: transparent;
+              -webkit-text-stroke: 0.5px #000;
+            }
+            .tianzi-stroke-order {
+              position: absolute;
+              top: 2px;
+              right: 2px;
+              font-size: 8px;
+              color: #666;
+              line-height: 1;
+            }
+            .print-page {
+              width: 210mm;
+              min-height: 297mm;
+              margin: 0 auto;
+              padding: 20mm;
+              background: white;
+              font-family: 'SimSun', '宋体', serif;
+              font-size: 12pt;
+              line-height: 1.5;
+              box-sizing: border-box;
+            }
+            .print-grid-container {
+              display: block;
+              margin-bottom: 20px;
+              line-height: 0;
+            }
+            @media print {
+              body { margin: 0; padding: 0; }
+              .print-page {
+                width: 100%;
+                margin: 0;
+                padding: 20mm;
+                box-sizing: border-box;
+              }
+              .tianzi-grid {
+                break-inside: avoid;
+              }
+              .tianzi-char {
+                color: transparent !important;
+                -webkit-text-stroke: 0.5px #000 !important;
+                font-weight: normal !important;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          ${printHtml}
+        </body>
+        </html>
+      `);
+      
+      printWindow.document.close();
+      
+      // 等待内容加载完成后打印
+      printWindow.onload = function() {
+        setTimeout(() => {
+          printWindow.print();
+          printWindow.close();
+        }, 500);
+      };
+    }
+
     // 事件绑定
     document.getElementById('btnSelectAll').onclick = ()=>{listEl.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=true)};
     document.getElementById('btnClear').onclick = ()=>{listEl.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=false)};
@@ -1753,6 +2221,18 @@
     document.getElementById('btnCloseSettings').onclick = ()=>{document.getElementById('settingsModal').classList.remove('show');};
     currentCardEl.addEventListener('click', ()=>{currentCardEl.classList.toggle('flipped')});
     bookSelect.addEventListener('change', ()=>{renderLessonList(); resetStudy()});
+    
+    // 打印功能事件绑定
+    document.getElementById('btnPrint').onclick = ()=>{
+      // 确保课文列表已经渲染
+      if (listEl.innerHTML.includes('本册暂无数据') || listEl.querySelectorAll('input[type="checkbox"]').length === 0) {
+        renderLessonList();
+      }
+      updatePrintCharsList();
+      document.getElementById('printModal').classList.add('show');
+    };
+    document.getElementById('btnCancelPrint').onclick = ()=>{document.getElementById('printModal').classList.remove('show');};
+    document.getElementById('btnConfirmPrint').onclick = ()=>{executePrint(); document.getElementById('printModal').classList.remove('show');};
     
     // 听写功能事件绑定
     document.getElementById('btnPlayAudio').onclick = playCurrentCharAudio;
