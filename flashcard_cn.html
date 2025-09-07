@@ -1317,6 +1317,11 @@
     }
 
     function startStudy(){
+      // 如果当前在听写模式，先重置状态
+      if(isDictationMode) {
+        resetStudy();
+      }
+      
       if(buildDeck()) {
         const practiceMode = document.getElementById('practiceMode').value;
         
