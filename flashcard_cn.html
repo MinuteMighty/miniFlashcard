@@ -901,19 +901,6 @@
         </select>
       </div>
       
-      <div class="setting-group">
-        <label>语音质量：</label>
-        <select id="voiceQuality">
-          <option value="high" selected>高质量（在线语音）</option>
-          <option value="medium">中等质量（系统语音）</option>
-          <option value="basic">基础质量（浏览器默认）</option>
-        </select>
-        <div style="font-size:12px;color:#999;margin-top:8px;">
-          💡 高质量：Google/Microsoft在线语音（海外友好）<br>
-          🌐 中等质量：系统优化语音（无需网络）<br>
-          📱 基础质量：浏览器默认语音（兼容性最佳）
-        </div>
-      </div>
       
       <div class="btn-group">
         <button id="btnCloseSettings" class="secondary">关闭</button>
@@ -1343,22 +1330,9 @@
 
     // 根据用户选择更新语音配置
     function updateVoiceConfig() {
-      const quality = document.getElementById('voiceQuality').value;
-      
-      switch(quality) {
-        case 'high':
-          VOICE_CONFIG.usePreRecorded = true;
-          console.log('🎯 启用高质量语音（在线预录音）');
-          break;
-        case 'medium':
-          VOICE_CONFIG.usePreRecorded = false;
-          console.log('🎯 启用中等质量语音（优化TTS）');
-          break;
-        case 'basic':
-          VOICE_CONFIG.usePreRecorded = false;
-          console.log('🎯 启用基础质量语音（浏览器默认）');
-          break;
-      }
+      // 固定使用中等质量：优化TTS
+      VOICE_CONFIG.usePreRecorded = false;
+      console.log('🎯 启用中等质量语音（优化TTS）');
     }
 
     function initSpeechSynthesis() {
@@ -1647,7 +1621,7 @@
         return;
       }
 
-      const quality = document.getElementById('voiceQuality').value;
+      const quality = 'medium'; // 固定使用中等质量
       let success = false;
 
       console.log(`🎯 开始语音播放，质量设置: ${quality}，字符: ${text}`);
@@ -1799,11 +1773,9 @@
       initSpeechSynthesis();
       
       // 显示语音质量提示
-      const quality = document.getElementById('voiceQuality').value;
+      const quality = 'medium'; // 固定使用中等质量
       const qualityText = {
-        'high': '高质量在线语音',
-        'medium': '中等质量系统语音', 
-        'basic': '基础质量浏览器语音'
+        'medium': '中等质量系统语音'
       };
       
       console.log(`🎯 听写模式启动，使用 ${qualityText[quality]}`);
@@ -2549,30 +2521,10 @@
       
       console.log('所有事件绑定完成');
       
-      // 测试打印弹窗（3秒后自动显示，用于调试）
-      setTimeout(() => {
-        console.log('测试打印弹窗显示...');
-        const printModal = document.getElementById('printModal');
-        if (printModal) {
-          console.log('找到printModal，测试显示');
-          printModal.classList.add('show');
-          printModal.style.display = 'flex';
-          printModal.style.visibility = 'visible';
-          // 3秒后自动隐藏
-          setTimeout(() => {
-            printModal.classList.remove('show');
-            printModal.style.display = 'none';
-            printModal.style.visibility = 'hidden';
-          }, 3000);
-        } else {
-          console.error('测试时未找到printModal');
-        }
-      }, 3000);
-      
       // 显示听写功能介绍（仅首次访问）
       if (!localStorage.getItem('dictation-intro-shown-v2')) {
         setTimeout(() => {
-          alert('🎉 听写功能全新升级！\n\n✨ 新增海外友好语音支持：\n• 🌐 Google翻译语音（全球可用）\n• 🎯 Microsoft语音（海外优化）\n• 📱 多重降级保障机制\n\n🚀 使用方法：\n1️⃣ 点击"设置"→选择"听写模式"\n2️⃣ 根据网络情况选择语音质量\n3️⃣ 开始学习，享受高质量中文发音\n\n💡 海外用户推荐选择"高质量"获得最佳体验！');
+          alert('🎉 听写功能全新升级！\n\n✨ 优化语音支持：\n• 🎯 中等质量系统语音\n• 📱 多重降级保障机制\n\n🚀 使用方法：\n1️⃣ 点击"设置"→选择"听写模式"\n2️⃣ 开始学习，享受稳定中文发音');
           localStorage.setItem('dictation-intro-shown-v2', 'true');
         }, 1000);
       }
