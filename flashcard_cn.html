@@ -219,7 +219,7 @@
     z-index: 1000;
     backdrop-filter: blur(4px);
   }
-  .modal.show{display: flex}
+  .modal.show{display: flex !important}
   .dialog{
     width: min(420px, 90vw);
     background: #fff;
@@ -678,6 +678,11 @@
     .dialog{
       padding: 20px;
       margin: 10px;
+      width: min(380px, 95vw);
+      max-height: 90vh;
+    }
+    .modal{
+      padding: 10px;
     }
     .controls{
       gap: 12px;
@@ -2224,14 +2229,29 @@
     
     // 打印功能事件绑定
     document.getElementById('btnPrint').onclick = ()=>{
+      console.log('打印按钮被点击');
       // 确保课文列表已经渲染
       if (listEl.innerHTML.includes('本册暂无数据') || listEl.querySelectorAll('input[type="checkbox"]').length === 0) {
         renderLessonList();
       }
       updatePrintCharsList();
-      document.getElementById('printModal').classList.add('show');
+      const printModal = document.getElementById('printModal');
+      console.log('找到printModal元素:', printModal);
+      if (printModal) {
+        printModal.classList.add('show');
+        printModal.style.display = 'flex';
+        printModal.style.visibility = 'visible';
+        console.log('已添加show类并设置display');
+      } else {
+        console.error('未找到printModal元素');
+      }
     };
-    document.getElementById('btnCancelPrint').onclick = ()=>{document.getElementById('printModal').classList.remove('show');};
+    document.getElementById('btnCancelPrint').onclick = ()=>{
+      const printModal = document.getElementById('printModal');
+      printModal.classList.remove('show');
+      printModal.style.display = 'none';
+      printModal.style.visibility = 'hidden';
+    };
     document.getElementById('btnConfirmPrint').onclick = ()=>{executePrint(); document.getElementById('printModal').classList.remove('show');};
     
     // 听写功能事件绑定
