@@ -564,7 +564,7 @@
     font-size: 14mm;
     font-weight: normal;
     line-height: 1;
-    font-family: 'KaiTi', '楷体', 'STKaiti', serif;
+    font-family: 'KaiTi', '楷体', 'STKaiti', '华文楷体', 'STKaiti', 'SimKai', serif;
     color: transparent;
     -webkit-text-stroke: 0.5px #000;
   }
@@ -2146,7 +2146,7 @@
               font-size: 14mm;
               font-weight: normal;
               line-height: 1;
-              font-family: 'KaiTi', '楷体', 'STKaiti', serif;
+              font-family: 'KaiTi', '楷体', 'STKaiti', '华文楷体', 'STKaiti', 'SimKai', serif;
               color: transparent;
               -webkit-text-stroke: 0.5px #000;
             }
@@ -2214,7 +2214,7 @@
       };
     }
 
-    // 事件绑定
+    // 页面加载完成后初始化
     document.getElementById('btnSelectAll').onclick = ()=>{listEl.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=true)};
     document.getElementById('btnClear').onclick = ()=>{listEl.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=false)};
     document.getElementById('btnStart').onclick = startStudy;
@@ -2228,7 +2228,11 @@
     bookSelect.addEventListener('change', ()=>{renderLessonList(); resetStudy()});
     
     // 打印功能事件绑定
-    document.getElementById('btnPrint').onclick = ()=>{
+    console.log('开始绑定打印按钮事件...');
+    const printBtn = document.getElementById('btnPrint');
+    console.log('打印按钮元素:', printBtn);
+    if (printBtn) {
+      printBtn.onclick = ()=>{
       console.log('打印按钮被点击');
       // 确保课文列表已经渲染
       if (listEl.innerHTML.includes('本册暂无数据') || listEl.querySelectorAll('input[type="checkbox"]').length === 0) {
@@ -2245,7 +2249,10 @@
       } else {
         console.error('未找到printModal元素');
       }
-    };
+      };
+    } else {
+      console.error('未找到打印按钮元素');
+    }
     document.getElementById('btnCancelPrint').onclick = ()=>{
       const printModal = document.getElementById('printModal');
       printModal.classList.remove('show');
@@ -2368,6 +2375,199 @@
       addEditButton();
       resetStudy();
       optimizeForTouch();
+      
+      // 绑定所有事件
+      console.log('开始绑定事件...');
+      
+      // 基本功能事件绑定
+      const btnSelectAll = document.getElementById('btnSelectAll');
+      if (btnSelectAll) btnSelectAll.onclick = ()=>{listEl.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=true)};
+      
+      const btnClear = document.getElementById('btnClear');
+      if (btnClear) btnClear.onclick = ()=>{listEl.querySelectorAll('input[type="checkbox"]').forEach(c=>c.checked=false)};
+      
+      const btnStart = document.getElementById('btnStart');
+      if (btnStart) btnStart.onclick = startStudy;
+      
+      const btnNext = document.getElementById('btnNext');
+      if (btnNext) btnNext.onclick = nextCard;
+      
+      const btnPrev = document.getElementById('btnPrev');
+      if (btnPrev) btnPrev.onclick = prevCard;
+      
+      const btnShuffle = document.getElementById('btnShuffle');
+      if (btnShuffle) btnShuffle.onclick = shuffleCurrentDeck;
+      
+      const btnStartStudy = document.getElementById('btnStartStudy');
+      if (btnStartStudy) btnStartStudy.onclick = ()=>{startStudy(); document.getElementById('settingsModal').classList.remove('show');};
+      
+      const btnSettings = document.getElementById('btnSettings');
+      if (btnSettings) btnSettings.onclick = ()=>{document.getElementById('settingsModal').classList.add('show');};
+      
+      const btnCloseSettings = document.getElementById('btnCloseSettings');
+      if (btnCloseSettings) btnCloseSettings.onclick = ()=>{document.getElementById('settingsModal').classList.remove('show');};
+      
+      if (currentCardEl) currentCardEl.addEventListener('click', ()=>{currentCardEl.classList.toggle('flipped')});
+      if (bookSelect) bookSelect.addEventListener('change', ()=>{renderLessonList(); resetStudy()});
+      
+      // 打印功能事件绑定
+      console.log('开始绑定打印按钮事件...');
+      const printBtn = document.getElementById('btnPrint');
+      console.log('打印按钮元素:', printBtn);
+      if (printBtn) {
+        printBtn.onclick = ()=>{
+          console.log('打印按钮被点击');
+          // 确保课文列表已经渲染
+          if (listEl.innerHTML.includes('本册暂无数据') || listEl.querySelectorAll('input[type="checkbox"]').length === 0) {
+            renderLessonList();
+          }
+          updatePrintCharsList();
+          const printModal = document.getElementById('printModal');
+          console.log('找到printModal元素:', printModal);
+          if (printModal) {
+            printModal.classList.add('show');
+            printModal.style.display = 'flex';
+            printModal.style.visibility = 'visible';
+            console.log('已添加show类并设置display');
+          } else {
+            console.error('未找到printModal元素');
+          }
+        };
+      } else {
+        console.error('未找到打印按钮元素');
+      }
+      
+      const btnCancelPrint = document.getElementById('btnCancelPrint');
+      if (btnCancelPrint) {
+        btnCancelPrint.onclick = ()=>{
+          const printModal = document.getElementById('printModal');
+          if (printModal) {
+            printModal.classList.remove('show');
+            printModal.style.display = 'none';
+            printModal.style.visibility = 'hidden';
+          }
+        };
+      }
+      
+      const btnConfirmPrint = document.getElementById('btnConfirmPrint');
+      if (btnConfirmPrint) {
+        btnConfirmPrint.onclick = ()=>{executePrint(); document.getElementById('printModal').classList.remove('show');};
+      }
+      
+      // 听写功能事件绑定
+      const btnPlayAudio = document.getElementById('btnPlayAudio');
+      if (btnPlayAudio) btnPlayAudio.onclick = playCurrentCharAudio;
+      
+      const btnCheck = document.getElementById('btnCheck');
+      if (btnCheck) btnCheck.onclick = checkDictationAnswer;
+      
+      const btnNextDictation = document.getElementById('btnNextDictation');
+      if (btnNextDictation) btnNextDictation.onclick = nextDictation;
+      
+      const btnReplay = document.getElementById('btnReplay');
+      if (btnReplay) btnReplay.onclick = playCurrentCharAudio;
+      
+      // 听写输入框回车键检查答案
+      const dictationInput = document.getElementById('dictationInput');
+      if (dictationInput) {
+        dictationInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            checkDictationAnswer();
+          }
+        });
+      }
+      
+      // 听写模式切换
+      const btnDictationMode = document.getElementById('btnDictationMode');
+      if (btnDictationMode) {
+        btnDictationMode.onclick = ()=>{
+          document.getElementById('settingsModal').classList.remove('show');
+          startDictationMode();
+        };
+      }
+      
+      // 听写设置
+      const btnDictationSettings = document.getElementById('btnDictationSettings');
+      if (btnDictationSettings) {
+        btnDictationSettings.onclick = ()=>{
+          document.getElementById('settingsModal').classList.remove('show');
+          showDictationSettings();
+        };
+      }
+      
+      // 听写设置弹窗事件
+      const btnCloseDictationSettings = document.getElementById('btnCloseDictationSettings');
+      if (btnCloseDictationSettings) btnCloseDictationSettings.onclick = ()=>{document.getElementById('dictationSettingsModal').classList.remove('show');};
+      
+      const btnSaveDictationSettings = document.getElementById('btnSaveDictationSettings');
+      if (btnSaveDictationSettings) btnSaveDictationSettings.onclick = saveDictationSettings;
+      
+      // 数据编辑功能
+      const btnEditData = document.getElementById('btnEditData');
+      if (btnEditData) {
+        btnEditData.onclick = ()=>{
+          const book = bookSelect.value;
+          const LESSONS = DATA[book] || [];
+          jsonArea.value = JSON.stringify(LESSONS, null, 2);
+          editModal.classList.add('show');
+        };
+      }
+      
+      const btnCancelEdit = document.getElementById('btnCancelEdit');
+      if (btnCancelEdit) btnCancelEdit.onclick = ()=>{editModal.classList.remove('show');};
+      
+      const btnSave = document.getElementById('btnSave');
+      if (btnSave) {
+        btnSave.onclick = ()=>{
+          try{
+            const parsed = JSON.parse(jsonArea.value);
+            if(!Array.isArray(parsed)) throw new Error('JSON 顶层应为数组');
+            const ok = parsed.every(it=>typeof it.unit==='number' && typeof it.id==='string' && typeof it.title==='string' && typeof it.chars==='string');
+            if(!ok) throw new Error('每项需包含 {unit:number,id:string,title:string,chars:string}');
+            DATA[bookSelect.value] = parsed;
+            editModal.classList.remove('show');
+            renderLessonList();
+            resetStudy();
+            alert('数据已更新，请重新开始学习');
+          }catch(err){
+            alert('解析失败：'+err.message);
+          }
+        };
+      }
+      
+      const btnDownload = document.getElementById('btnDownload');
+      if (btnDownload) {
+        btnDownload.onclick = ()=>{
+          const blob = new Blob([jsonArea.value], {type:'application/json;charset=utf-8'});
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = `生字数据-${bookSelect.value}.json`;
+          a.click();
+          URL.revokeObjectURL(a.href);
+        };
+      }
+      
+      console.log('所有事件绑定完成');
+      
+      // 测试打印弹窗（3秒后自动显示，用于调试）
+      setTimeout(() => {
+        console.log('测试打印弹窗显示...');
+        const printModal = document.getElementById('printModal');
+        if (printModal) {
+          console.log('找到printModal，测试显示');
+          printModal.classList.add('show');
+          printModal.style.display = 'flex';
+          printModal.style.visibility = 'visible';
+          // 3秒后自动隐藏
+          setTimeout(() => {
+            printModal.classList.remove('show');
+            printModal.style.display = 'none';
+            printModal.style.visibility = 'hidden';
+          }, 3000);
+        } else {
+          console.error('测试时未找到printModal');
+        }
+      }, 3000);
       
       // 显示听写功能介绍（仅首次访问）
       if (!localStorage.getItem('dictation-intro-shown-v2')) {
